@@ -29,6 +29,144 @@
 
 ---
 
+## 關於本專案
+
+> 🍃 **本專案基於 [Open Design](https://github.com/nexu-io/open-design)，針對 [GLM（智譜）](https://www.zhipuai.cn/) 進行了優化與改進。** 它保留了上游 Open Design 完整的 Agentic 設計工作台，同時對 Agent 迴圈、提示詞與模型接入做了針對 GLM-5.2 工具呼叫的適配，讓整套流程原生執行在 GLM 系列模型上，而不再只依賴 Claude。
+
+原始產品、技能、設計系統與外掛的功勞歸屬 Open Design 團隊及其貢獻者。本 Fork 主要做的是：
+
+- 將預設的 Agent 執行階段切換到 **GLM-5.2**。
+- 針對 GLM 的工具呼叫行為調校系統提示詞、輸出契約與 artifact 串流輸出。
+- 保留上游的技能、設計系統與外掛，讓開放的生態繼續可用。
+
+上游產品請見 [`nexu-io/open-design`](https://github.com/nexu-io/open-design)。
+
+---
+
+## 部署
+
+Z-Design 提供三種形態：本地優先的桌面應用、Docker 映像檔、以及從原始碼執行。下面所有命令都基於本倉庫。
+
+### 前置需求
+
+| 方式 | 需求 |
+|---|---|
+| 桌面應用 | macOS（Apple Silicon / Intel x64）或 Windows（x64），無需安裝其他相依套件。 |
+| Docker | Docker Desktop + Docker Compose v2 |
+| 從原始碼執行 | Node.js `~24`、pnpm `10.33.x`（透過 Corepack）。主支援 macOS / Linux / WSL2；Windows 原生為盡力而為。 |
+
+### 方式 A — 桌面應用（零設定，推薦）
+
+從 [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases) 下載對應平台最新建置：
+
+- **macOS** — Apple Silicon 與 Intel x64
+- **Windows** — x64
+- **Linux** — AppImage（可選通道）
+
+安裝後，應用會自動偵測 `PATH` 上的編碼 Agent CLI，載入 100+ 技能與 150 個設計系統，直接在入口檢視輸入簡報即可。若要讓 GLM 作為後端，把執行模式切換為 **BYOK / API 模式**，填入 GLM 的 API Key 與端點即可。
+
+### 方式 B — Docker（單容器，無頭部署）
+
+發布映像檔會在 `7456` 連接埠執行守護行程並提供靜態 Web 建置。
+
+```bash
+# 1. 複製
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. 準備環境變數（產生安全的 API token）
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. 啟動
+docker compose up -d
+
+# 4. 開啟
+#    http://localhost:7456
+```
+
+常用 Docker 命令：
+
+```bash
+docker compose logs -f        # 檢視即時日誌
+docker compose restart        # 重啟
+docker compose pull && docker compose up -d   # 更新到最新映像檔
+docker compose down           # 停止
+docker compose down -v        # 停止並清除本地資料
+```
+
+`deploy/.env` 關鍵變數：
+
+```env
+OPEN_DESIGN_PORT=7456                       # 宿主連接埠（繫結到 127.0.0.1）
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # 網域後方的 CORS 來源
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # 映像檔 tag
+ZD_API_TOKEN=                                # 必填 — 用 openssl rand -hex 32 產生
+```
+
+> **公開暴露：** 維持 Compose 繫結到 localhost，透過帶鑑權的反向代理、SSH 通道或 VPN 再暴露到公開網路。若在前方放 nginx，務必關閉 SSE 路由的緩衝（`proxy_buffering off; gzip off;`），否則 Agent 長連線串流會被截斷。
+
+### 方式 C — 從原始碼執行（開發模式）
+
+```bash
+# 1. 複製
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. 工具鏈（Node 24 + pnpm 10.33.x，透過 Corepack）
+corepack enable
+pnpm install
+
+# 3. 建置 daemon CLI（`od` 命令依賴它）
+pnpm --filter @open-design/daemon build
+
+# 4. 前景啟動 daemon + web
+pnpm tools-dev run web
+# 開啟 tools-dev 印出的 web 位址
+```
+
+其他生命週期命令：
+
+```bash
+pnpm tools-dev                       # 背景啟動 daemon + web + desktop
+pnpm tools-dev start web             # 背景啟動 daemon + web
+pnpm tools-dev status                # 檢視託管的執行階段狀態
+pnpm tools-dev logs                  # 檢視 daemon/web/desktop 日誌
+pnpm tools-dev stop                  # 停止託管的執行階段
+pnpm typecheck                       # 工作區型別檢查
+```
+
+> 請勿使用已移除的舊根命令（`pnpm dev`、`pnpm start`、`pnpm daemon`）。`pnpm tools-dev` 是唯一的本地生命週期入口。
+
+### 設定 GLM 作為後端
+
+Z-Design 啟動後，把它指向 GLM，讓所有生成都走 GLM-5.2：
+
+1. 開啟應用，進入 **設定 → 執行模式**。
+2. 選擇 **BYOK / API 模式**（OpenAI 相容端點）。
+3. 填入：
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4`（智譜 GLM 的 OpenAI 相容端點）
+   - **apiKey** — 你在 [open.bigmodel.cn](https://open.bigmodel.cn/) 的 GLM API Key
+   - **model** — `glm-5.2`（或其他你有權限的 GLM 系列模型）
+4. 儲存，然後在入口檢視輸入簡報。Agent 會在左側面板串流輸出，`<artifact>` 在右側即時呈現。
+
+> 在 Docker / 無頭部署中，相同的值透過 `POST /api/proxy/openai/stream` 傳給同樣的 `baseUrl` / `apiKey` / `model` 欄位，無需單獨設定。
+
+### 驗證是否正常
+
+```bash
+# 原始碼 / 開發模式 — daemon 健康檢查
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — 從 compose 網路內部檢查
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+`/api/health` 回傳 `200 OK` 表示守護行程已啟動，Web 建置已就緒。完整快速開始、環境變數、Nix flake 與打包建置流程請見 [`QUICKSTART.zh-TW.md`](QUICKSTART.zh-TW.md)。
+
+---
+
 ## 什麼是 Open Design
 
 🎨 **本地優先、開源的 [Claude Design][cd] 替代方案。** &nbsp;🖥️ **macOS 與 Windows 的原生桌面應用程式。** &nbsp;⚡ **100+ 個 skills** · ✨ **150 套品牌級 `DESIGN.md` 設計系統** · 📦 **261 個開箱即用的外掛。** &nbsp;🖼️ 可生成 **網頁 · 桌面 · 行動裝置原型**、**即時儀表板／artifacts**、**簡報**、**圖片**、**影片**，外加 **HyperFrames** 動態圖像。🔒 沙箱化 iframe 預覽 · 支援 HTML / PDF / PPTX / MP4 匯出。 &nbsp;🤖 **可在 Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity 等 21 個本地 CLI 上執行**，或透過 BYOK 接上任何相容 OpenAI 的端點。

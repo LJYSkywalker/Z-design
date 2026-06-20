@@ -29,6 +29,144 @@
 
 ---
 
+## About this project
+
+> 🍃 **This project is based on [Open Design](https://github.com/nexu-io/open-design) and is optimized and improved for [GLM (Zhipu)](https://www.zhipuai.cn/).** It keeps the full agentic design workspace of upstream Open Design while tuning the agent loop, prompts, and model integration for GLM-5.2's tool-calling, so the whole craft runs natively on the GLM family instead of Claude-only.
+
+All credit for the original product, skills, design systems, and plugins goes to the Open Design team and its contributors. This fork focuses on:
+
+- Re-wiring the default agent runtime toward **GLM-5.2**.
+- Tuning the system prompt, output contract, and artifact streaming for GLM's tool-calling behavior.
+- Keeping upstream skills, design systems, and plugins intact so the open ecosystem still works.
+
+For the upstream product, see [`nexu-io/open-design`](https://github.com/nexu-io/open-design).
+
+---
+
+## Deployment
+
+Z-Design ships as a local-first desktop app, a Docker image, and a run-from-source project. Pick the path that fits you. All commands below use this repository.
+
+### Prerequisites
+
+| Path | Requirements |
+|---|---|
+| Desktop app | macOS (Apple Silicon / Intel x64) or Windows (x64). Nothing else to install. |
+| Docker | Docker Desktop + Docker Compose v2 |
+| From source | Node.js `~24`, pnpm `10.33.x` (via Corepack). macOS / Linux / WSL2 primary; Windows native best-effort. |
+
+### Option A — Desktop app (zero config, recommended)
+
+Download the latest build for your platform from [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases):
+
+- **macOS** — Apple Silicon & Intel x64
+- **Windows** — x64
+- **Linux** — AppImage (optional lane)
+
+After install the app auto-detects every coding-agent CLI on your `PATH`, loads 100+ skills and 150 design systems, and lets you type a brief in the entry view. To use GLM as the backend, switch the execution mode to **BYOK / API mode** and paste your GLM API key + endpoint.
+
+### Option B — Docker (single container, headless)
+
+The published image runs the daemon and serves the static web build on port `7456`.
+
+```bash
+# 1. Clone
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Prepare env (generates a secure API token)
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. Start
+docker compose up -d
+
+# 4. Open
+#    http://localhost:7456
+```
+
+Common Docker commands:
+
+```bash
+docker compose logs -f        # follow logs
+docker compose restart        # restart
+docker compose pull && docker compose up -d   # update to latest image
+docker compose down           # stop
+docker compose down -v        # stop and wipe local data
+```
+
+Key `deploy/.env` variables:
+
+```env
+OPEN_DESIGN_PORT=7456                       # host port (bound to 127.0.0.1)
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # CORS origins if behind a domain
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # image tag
+ZD_API_TOKEN=                                # REQUIRED — generate with: openssl rand -hex 32
+```
+
+> **Public exposure:** keep Compose bound to localhost and put an authenticated reverse proxy, SSH tunnel, or VPN in front of it before exposing Z-Design remotely. If you place nginx in front, keep SSE routes unbuffered (`proxy_buffering off; gzip off;`) or long agent streams will be truncated.
+
+### Option C — Run from source (development)
+
+```bash
+# 1. Clone
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Toolchain (Node 24 + pnpm 10.33.x via Corepack)
+corepack enable
+pnpm install
+
+# 3. Build the daemon CLI (needed by the `od` command)
+pnpm --filter @open-design/daemon build
+
+# 4. Start daemon + web in the foreground
+pnpm tools-dev run web
+# open the web URL printed by tools-dev
+```
+
+Other lifecycle commands:
+
+```bash
+pnpm tools-dev                       # daemon + web + desktop in the background
+pnpm tools-dev start web             # daemon + web in the background
+pnpm tools-dev status                # inspect managed runtimes
+pnpm tools-dev logs                  # show daemon/web/desktop logs
+pnpm tools-dev stop                  # stop managed runtimes
+pnpm typecheck                       # workspace typecheck
+```
+
+> Do not use the removed legacy root aliases (`pnpm dev`, `pnpm start`, `pnpm daemon`). `pnpm tools-dev` is the only local lifecycle entry point.
+
+### Configure GLM as the backend
+
+Once Z-Design is running, point it at GLM so every generation goes through GLM-5.2:
+
+1. Open the app and go to **Settings → Execution mode**.
+2. Pick **BYOK / API mode** (OpenAI-compatible endpoint).
+3. Fill in:
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4` (Zhipu GLM OpenAI-compatible endpoint)
+   - **apiKey** — your GLM API key from [open.bigmodel.cn](https://open.bigmodel.cn/)
+   - **model** — `glm-5.2` (or another GLM family model you have access to)
+4. Save, then type a brief in the entry view. The agent streams into the left pane; the `<artifact>` renders live on the right.
+
+> In Docker / headless deployments the same values are sent to `POST /api/proxy/openai/stream` with the same `baseUrl` / `apiKey` / `model` fields — no separate config surface.
+
+### Verify it works
+
+```bash
+# Source / dev mode — daemon health
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — health from inside the compose network
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+A `200 OK` from `/api/health` means the daemon is up and the web build is being served. For the full quickstart, env vars, Nix flake, and packaged build flow, see [`QUICKSTART.md`](QUICKSTART.md).
+
+---
+
 ## What is Open Design
 
 🎨 **The local-first, open-source [Claude Design][cd] alternative.** &nbsp;🖥️ **Native desktop app for macOS and Windows.** &nbsp;⚡ **100+ skills** · ✨ **150 brand-grade `DESIGN.md` systems** · 📦 **261 ready-to-use plugins.** &nbsp;🖼️ Generates **web · desktop · mobile prototypes**, **live dashboards / artifacts**, **decks**, **images**, **video**, plus **HyperFrames** motion graphics. 🔒 Sandboxed iframe preview · HTML / PDF / PPTX / MP4 export. &nbsp;🤖 **Runs on Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Amp · Hermes · Kimi · Antigravity and 22 local CLIs**, or any OpenAI-compatible endpoint via BYOK.

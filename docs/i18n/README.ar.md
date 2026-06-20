@@ -31,6 +31,144 @@
 
 ---
 
+## حول هذا المشروع
+
+> 🍃 **هذا المشروع مبني على [Open Design](https://github.com/nexu-io/open-design) ومُحسَّن ومُطوَّر لصالح [GLM (Zhipu)](https://www.zhipuai.cn/).** يحتفظ بمساحة عمل التصميم العميلية الكاملة من Open Design المنبعية، مع تكييف حلقة الوكيل والتعليمات (prompts) ودمج النموذج مع استدعاءات أدوات GLM-5.2، بحيث يعمل التدفق بالكامل بشكل أصلي على عائلة GLM بدلاً من Claude فقط.
+
+يُعزى الفضل في المنتج الأصلي والمهارات (skills) وأنظمة التصميم والإضافات إلى فريق Open Design ومساهميه. يركّز هذا التفرع (fork) على:
+
+- إعادة توجيه تشغيل الوكيل الافتراضي نحو **GLM-5.2**.
+- ضبط تعليمات النظام وعقد الإخراج وتدفق artifacts وفق سلوك استدعاءات الأدوات في GLM.
+- الحفاظ على مهارات وأنظمة تصميم وإضافات المنبع سليمة لكي يستمر النظام البيئي المفتوح في العمل.
+
+للحصول على المنتج المنبعي، راجع [`nexu-io/open-design`](https://github.com/nexu-io/open-design).
+
+---
+
+## النشر
+
+يُوزَّع Z-Design كتطبيق سطح مكتب ذي أولوية محلية، وكصورة Docker، وكمشروع يُشغَّل من المصدر. اختر المسار الذي يناسبك. تستخدم جميع الأوامر أدناه هذا المستودع.
+
+### المتطلبات المسبقة
+
+| المسار | المتطلبات |
+|---|---|
+| تطبيق سطح المكتب | macOS (Apple Silicon / Intel x64) أو Windows (x64). لا حاجة لتثبيت أي شيء آخر. |
+| Docker | Docker Desktop + Docker Compose v2 |
+| من المصدر | Node.js `~24`، pnpm `10.33.x` (عبر Corepack). macOS / Linux / WSL2 أساسية؛ Windows الأصلية بأقصى جهد ممكن. |
+
+### الخيار A — تطبيق سطح المكتب (بدون إعداد، موصى به)
+
+نزّل أحدث بناء لمنصتك من [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases):
+
+- **macOS** — Apple Silicon و Intel x64
+- **Windows** — x64
+- **Linux** — AppImage (مسار اختياري)
+
+بعد التثبيت، يكتشف التطبيق تلقائيًا كل واجهة CLI لوكيل برمجة على `PATH` الخاص بك، ويحمّل أكثر من 100 مهارة و150 نظام تصميم، ويتيح لك كتابة موجز في عرض الإدخال. لاستخدام GLM كخلفية، بدّل وضع التنفيذ إلى **وضع BYOK / API** والصق مفتاح GLM API ونقطة النهاية الخاصة بك.
+
+### الخيار B — Docker (حاوية واحدة، بلا واجهة)
+
+تشغّل الصورة المنشورة الخفي (daemon) وتقدّم بناء الويب الثابت على المنفذ `7456`.
+
+```bash
+# 1. استنساخ
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. تجهيز متغيرات البيئة (يُنشئ رمز API آمنًا)
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. التشغيل
+docker compose up -d
+
+# 4. افتح
+#    http://localhost:7456
+```
+
+أوامر Docker الشائعة:
+
+```bash
+docker compose logs -f        # متابعة السجلات
+docker compose restart        # إعادة التشغيل
+docker compose pull && docker compose up -d   # التحديث إلى أحدث صورة
+docker compose down           # الإيقاف
+docker compose down -v        # الإيقاف ومسح البيانات المحلية
+```
+
+المتغيرات الأساسية في `deploy/.env`:
+
+```env
+OPEN_DESIGN_PORT=7456                       # منفذ المضيف (مرتبط بـ 127.0.0.1)
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # أصول CORS خلف نطاق
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # وسم الصورة
+ZD_API_TOKEN=                                # مطلوب — أنشئه باستخدام: openssl rand -hex 32
+```
+
+> **التعرض العام:** أبقِ Compose مرتبطًا بـ localhost وضع خلفية عكسية موثَّقة أو نفق SSH أو VPN أمامه قبل تعريض Z-Design للشبكة العامة. إذا وضعت nginx في المقدمة، أبقِ مسارات SSE دون تخزين مؤقت (`proxy_buffering off; gzip off;`) وإلا سيتم قطع تدفقات الوكيل الطويلة.
+
+### الخيار C — التشغيل من المصدر (وضع التطوير)
+
+```bash
+# 1. استنساخ
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. سلسلة الأدوات (Node 24 + pnpm 10.33.x عبر Corepack)
+corepack enable
+pnpm install
+
+# 3. بناء واجهة الخفي CLI (يحتاجها الأمر `od`)
+pnpm --filter @open-design/daemon build
+
+# 4. تشغيل الخفي + الويب في المقدمة
+pnpm tools-dev run web
+# افتح عنوان الويب الذي يطبعه tools-dev
+```
+
+أوامر دورة الحياة الأخرى:
+
+```bash
+pnpm tools-dev                       # الخفي + الويب + سطح المكتب في الخلفية
+pnpm tools-dev start web             # الخفي + الويب في الخلفية
+pnpm tools-dev status                # فحص حالات التشغيل المُدارة
+pnpm tools-dev logs                  # عرض سجلات الخفي/الويب/سطح المكتب
+pnpm tools-dev stop                  # إيقاف حالات التشغيل المُدارة
+pnpm typecheck                       # فحص الأنواع في مساحة العمل
+```
+
+> لا تستخدم الأسماء المستعار الجذرية القديمة المحذوفة (`pnpm dev`، `pnpm start`، `pnpm daemon`). `pnpm tools-dev` هو نقطة الدخول الوحيدة لدورة الحياة المحلية.
+
+### تكوين GLM كخلفية
+
+بعد تشغيل Z-Design، وجّهه إلى GLM بحيث تمر كل عملية توليد عبر GLM-5.2:
+
+1. افتح التطبيق واذهب إلى **الإعدادات → وضع التنفيذ**.
+2. اختر **وضع BYOK / API** (نقطة نهاية متوافقة مع OpenAI).
+3. عبّئ:
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4` (نقطة نهاية Zhipu GLM المتوافقة مع OpenAI)
+   - **apiKey** — مفتاح GLM API الخاص بك من [open.bigmodel.cn](https://open.bigmodel.cn/)
+   - **model** — `glm-5.2` (أو نموذج آخر من عائلة GLM لديك حق الوصول إليه)
+4. احفظ ثم اكتب موجزًا في عرض الإدخال. يقوم الوكيل بالبث في اللوحة اليسرى؛ ويُعرض `<artifact>` مباشرة على اليمين.
+
+> في عمليات نشر Docker / بلا واجهة، تُرسل نفس القيم إلى `POST /api/proxy/openai/stream` بنفس الحقول `baseUrl` / `apiKey` / `model`؛ لا حاجة لواجهة إعداد منفصلة.
+
+### التحقق من العمل
+
+```bash
+# المصدر / وضع التطوير — فحص صحة الخفي
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — الفحص من داخل شبكة compose
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+استجابة `200 OK` من `/api/health` تعني أن الخفي يعمل وأن بناء الويب قيد التقديم. للبدء السريع الكامل ومتغيرات البيئة وNix flake وتدفق البناء المُغلَّف، راجع `QUICKSTART.md` في المستودع الجذري.
+
+---
+
 ## ما هو Open Design
 
 🎨 **البديل مفتوح المصدر القائم على الجهاز المحلي أولًا لـ [Claude Design][cd].** &nbsp;🖥️ **تطبيق سطح مكتب أصلي لنظامي macOS وWindows.** &nbsp;⚡ **أكثر من 100 مهارة** · ✨ **150 نظام `DESIGN.md` بجودة العلامة التجارية** · 📦 **261 إضافة جاهزة للاستخدام.** &nbsp;🖼️ يولّد **نماذج أولية للويب · سطح المكتب · الجوال**، و**لوحات معلومات / مخرجات حية**، و**عروضًا تقديمية**، و**صورًا**، و**فيديو**، إضافة إلى رسوميات حركية بـ **HyperFrames**. 🔒 معاينة iframe معزولة · تصدير بصيغ HTML / PDF / PPTX / MP4. &nbsp;🤖 **يعمل على Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity و21 واجهة CLI محلية**، أو أي نقطة نهاية متوافقة مع OpenAI عبر BYOK.

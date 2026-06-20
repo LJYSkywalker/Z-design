@@ -29,6 +29,144 @@
 
 ---
 
+## Bu proje hakkında
+
+> 🍃 **Bu proje [Open Design](https://github.com/nexu-io/open-design) temel alınarak [GLM (Zhipu)](https://www.zhipuai.cn/) için optimize edilmiş ve geliştirilmiştir.** Upstream Open Design'ın tam agentik tasarım çalışma alanını korurken; agent döngüsü, promptları ve model entegrasyonunu GLM-5.2'nin tool-calling davranışına uyarlar; böylece tüm akış Claude yerine GLM ailesinde doğal olarak çalışır.
+
+Orijinal ürünün, yeteneklerin (skill), tasarım sistemlerinin ve eklentilerin hakkı Open Design ekibine ve katkıda bulunanlara aittir. Bu fork şunlara odaklanır:
+
+- Varsayılan agent runtime'ını **GLM-5.2**'ye yönlendirmek.
+- Sistem promptunu, output sözleşmesini ve artifact akışını GLM'nin tool-calling davranışına göre ayarlamak.
+- Upstream yetenekleri, tasarım sistemlerini ve eklentileri koruyarak açık ekosistemin çalışmaya devam etmesini sağlamak.
+
+Upstream ürün için bkz. [`nexu-io/open-design`](https://github.com/nexu-io/open-design).
+
+---
+
+## Dağıtım
+
+Z-Design; yerel öncelikli bir masaüstü uygulaması, bir Docker imajı ve kaynaktan çalıştırılan bir proje olarak sunulur. Size uygun olan yolu seçin. Aşağıdaki tüm komutlar bu depoyu kullanır.
+
+### Ön koşullar
+
+| Yol | Gereksinimler |
+|---|---|
+| Masaüstü uygulaması | macOS (Apple Silicon / Intel x64) veya Windows (x64). Başka bir şey yüklemeye gerek yok. |
+| Docker | Docker Desktop + Docker Compose v2 |
+| Kaynaktan | Node.js `~24`, pnpm `10.33.x` (Corepack ile). macOS / Linux / WSL2 birincil; yerel Windows elden geldiğince. |
+
+### Seçenek A — Masaüstü uygulaması (sıfır yapılandırma, önerilir)
+
+Platformunuz için en son derlemeyi [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases) üzerinden indirin:
+
+- **macOS** — Apple Silicon ve Intel x64
+- **Windows** — x64
+- **Linux** — AppImage (isteğe bağlı)
+
+Kurulumdan sonra uygulama, `PATH` üzerindeki her kodlama-agent CLI'sını otomatik algılar, 100+ yetenek ve 150 tasarım sistemi yükler ve giriş görünümünde bir brief yazmanıza olanak tanır. GLM'yi backend olarak kullanmak için yürütme modunu **BYOK / API moduna** çevirin ve GLM API anahtarınızı ve uç noktanızı (endpoint) yapıştırın.
+
+### Seçenek B — Docker (tek konteyner, headless)
+
+Yayınlanan imaj daemon'u çalıştırır ve `7456` portunda statik web derlemesini sunar.
+
+```bash
+# 1. Klonla
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Ortam değişkenlerini hazırla (güvenli bir API token üretir)
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. Başlat
+docker compose up -d
+
+# 4. Aç
+#    http://localhost:7456
+```
+
+Sık kullanılan Docker komutları:
+
+```bash
+docker compose logs -f        # logları izle
+docker compose restart        # yeniden başlat
+docker compose pull && docker compose up -d   # en son imaja güncelle
+docker compose down           # durdur
+docker compose down -v        # durdur ve yerel verileri sil
+```
+
+`deploy/.env` temel değişkenleri:
+
+```env
+OPEN_DESIGN_PORT=7456                       # host portu (127.0.0.1'e bağlı)
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # bir alan adı arkasındaki CORS kaynakları
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # imaj etiketi
+ZD_API_TOKEN=                                # ZORUNLU — şununla üretin: openssl rand -hex 32
+```
+
+> **Herkese açık kullanım:** Compose'u localhost'a bağlı tutun ve Z-Design'ı herkese açık ağa açmadan önce önüne kimliği doğrulanmış bir reverse proxy, SSH tüneli veya VPN koyun. Önüne nginx koyarsanız, SSE yollarını tamponsuz tutun (`proxy_buffering off; gzip off;`), aksi halde agent'ın uzun akışları kesilir.
+
+### Seçenek C — Kaynaktan çalıştır (geliştirme)
+
+```bash
+# 1. Klonla
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Toolchain (Node 24 + pnpm 10.33.x, Corepack ile)
+corepack enable
+pnpm install
+
+# 3. Daemon CLI'sını derle (`od` komutu için gerekli)
+pnpm --filter @open-design/daemon build
+
+# 4. Daemon + web'i ön planda başlat
+pnpm tools-dev run web
+# tools-dev'un yazdırdığı web URL'sini aç
+```
+
+Diğer yaşam döngüsü komutları:
+
+```bash
+pnpm tools-dev                       # daemon + web + masaüstü arka planda
+pnpm tools-dev start web             # daemon + web arka planda
+pnpm tools-dev status                # yönetilen runtime'ları incele
+pnpm tools-dev logs                  # daemon/web/masaüstü loglarını göster
+pnpm tools-dev stop                  # yönetilen runtime'ları durdur
+pnpm typecheck                       # workspace typecheck
+```
+
+> Kaldırılan eski kök takma adlarını (`pnpm dev`, `pnpm start`, `pnpm daemon`) kullanmayın. `pnpm tools-dev` tek yerel yaşam döngüsü giriş noktasıdır.
+
+### GLM'yi backend olarak yapılandırma
+
+Z-Design çalışmaya başladıktan sonra, her üretimin GLM-5.2'den geçmesi için onu GLM'ye yönlendirin:
+
+1. Uygulamayı açın ve **Ayarlar → Yürütme modu**na gidin.
+2. **BYOK / API modu**nu seçin (OpenAI uyumlu uç nokta).
+3. Doldurun:
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4` (Zhipu GLM'nin OpenAI uyumlu uç noktası)
+   - **apiKey** — [open.bigmodel.cn](https://open.bigmodel.cn/)'den aldığınız GLM API anahtarınız
+   - **model** — `glm-5.2` (veya erişiminiz olan başka bir GLM ailesi modeli)
+4. Kaydedin ve giriş görünümünde bir brief yazın. Agent sol panele akış yapar; `<artifact>` sağda canlı olarak render edilir.
+
+> Docker / headless dağıtımlarda aynı değerler aynı `baseUrl` / `apiKey` / `model` alanlarıyla `POST /api/proxy/openai/stream`'e gönderilir; ayrı bir yapılandırma yüzeyi gerekmez.
+
+### Çalıştığını doğrulama
+
+```bash
+# Kaynak / dev modu — daemon sağlık kontrolü
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — compose ağı içinden kontrol
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+`/api/health`'ten `200 OK` gelmesi daemon'un çalıştığını ve web derlemesinin sunulduğunu gösterir. Tam quickstart, ortam değişkenleri, Nix flake ve paketlenmiş derleme akışı için kök dizindeki `QUICKSTART.md` dosyasına bakın.
+
+---
+
 ## Open Design nedir
 
 🎨 **Yerel öncelikli, açık kaynaklı [Claude Design][cd] alternatifi.** &nbsp;🖥️ **macOS ve Windows için yerel masaüstü uygulaması.** &nbsp;⚡ **100+ beceri** · ✨ **150 marka düzeyinde `DESIGN.md` sistemi** · 📦 **261 kullanıma hazır eklenti.** &nbsp;🖼️ **web · masaüstü · mobil prototipler**, **canlı panolar / artifact'ler**, **sunum desteleri**, **görseller**, **video** ve ayrıca **HyperFrames** hareket grafikleri üretir. 🔒 Yalıtılmış iframe önizlemesi · HTML / PDF / PPTX / MP4 dışa aktarımı. &nbsp;🤖 **Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity ve 21 yerel CLI üzerinde** veya BYOK ile herhangi bir OpenAI uyumlu uç noktada çalışır.

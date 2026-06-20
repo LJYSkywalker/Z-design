@@ -29,6 +29,144 @@
 
 ---
 
+## Sobre este projeto
+
+> 🍃 **Este projeto é baseado no [Open Design](https://github.com/nexu-io/open-design) e foi otimizado e melhorado para o [GLM (Zhipu)](https://www.zhipuai.cn/).** Ele mantém o workspace de design agentic completo do Open Design upstream, ao mesmo tempo em que adapta o loop do agente, os prompts e a integração de modelo para as chamadas de ferramenta do GLM-5.2, de modo que todo o fluxo rode nativamente na família GLM em vez de apenas no Claude.
+
+O crédito pelo produto original, pelas skills, pelos sistemas de design e pelos plugins pertence à equipe do Open Design e aos seus contribuidores. O foco deste fork é:
+
+- Redirecionar o runtime padrão do agente para o **GLM-5.2**.
+- Ajustar o prompt do sistema, o contrato de saída e o streaming de artifacts ao comportamento de chamadas de ferramenta do GLM.
+- Manter intactas as skills, os sistemas de design e os plugins do upstream para que o ecossistema aberto continue funcionando.
+
+Para o produto upstream, veja [`nexu-io/open-design`](https://github.com/nexu-io/open-design).
+
+---
+
+## Implantação
+
+O Z-Design é distribuído como um app de desktop local-first, uma imagem Docker e um projeto para rodar a partir do código-fonte. Escolha o caminho que melhor se adapta a você. Todos os comandos abaixo usam este repositório.
+
+### Pré-requisitos
+
+| Caminho | Requisitos |
+|---|---|
+| App de desktop | macOS (Apple Silicon / Intel x64) ou Windows (x64). Nada mais a instalar. |
+| Docker | Docker Desktop + Docker Compose v2 |
+| A partir do código-fonte | Node.js `~24`, pnpm `10.33.x` (via Corepack). macOS / Linux / WSL2 são os caminhos principais; Windows nativo é best-effort. |
+
+### Opção A — App de desktop (zero config, recomendado)
+
+Baixe o build mais recente para sua plataforma no [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases):
+
+- **macOS** — Apple Silicon e Intel x64
+- **Windows** — x64
+- **Linux** — AppImage (carril opcional)
+
+Após a instalação, o app detecta automaticamente toda CLI de agente de codificação no seu `PATH`, carrega 100+ skills e 150 sistemas de design e permite que você digite um brief na view de entrada. Para usar o GLM como backend, alterne o modo de execução para **modo BYOK / API** e cole sua GLM API Key e endpoint.
+
+### Opção B — Docker (um único contêiner, headless)
+
+A imagem publicada executa o daemon e atende o build estático web na porta `7456`.
+
+```bash
+# 1. Clonar
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Preparar variáveis de ambiente (gera um token de API seguro)
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. Iniciar
+docker compose up -d
+
+# 4. Abrir
+#    http://localhost:7456
+```
+
+Comandos comuns do Docker:
+
+```bash
+docker compose logs -f        # acompanhar logs
+docker compose restart        # reiniciar
+docker compose pull && docker compose up -d   # atualizar para a imagem mais recente
+docker compose down           # parar
+docker compose down -v        # parar e apagar dados locais
+```
+
+Principais variáveis do `deploy/.env`:
+
+```env
+OPEN_DESIGN_PORT=7456                       # porta do host (vinculada a 127.0.0.1)
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # origens CORS atrás de um domínio
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # tag da imagem
+ZD_API_TOKEN=                                # OBRIGATÓRIO — gere com: openssl rand -hex 32
+```
+
+> **Exposição pública:** mantenha o Compose vinculado a localhost e coloque um proxy reverso autenticado, túnel SSH ou VPN na frente antes de expor o Z-Design publicamente. Se colocar nginx na frente, mantenha as rotas SSE sem buffer (`proxy_buffering off; gzip off;`) ou os streams longos do agente serão truncados.
+
+### Opção C — Rodar a partir do código-fonte (desenvolvimento)
+
+```bash
+# 1. Clonar
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Toolchain (Node 24 + pnpm 10.33.x via Corepack)
+corepack enable
+pnpm install
+
+# 3. Buildar a CLI do daemon (requerida pelo comando `od`)
+pnpm --filter @open-design/daemon build
+
+# 4. Iniciar daemon + web em primeiro plano
+pnpm tools-dev run web
+# abra a URL web impressa pelo tools-dev
+```
+
+Outros comandos de ciclo de vida:
+
+```bash
+pnpm tools-dev                       # daemon + web + desktop em segundo plano
+pnpm tools-dev start web             # daemon + web em segundo plano
+pnpm tools-dev status                # inspecionar runtimes gerenciados
+pnpm tools-dev logs                  # mostrar logs de daemon/web/desktop
+pnpm tools-dev stop                  # parar runtimes gerenciados
+pnpm typecheck                       # typecheck do workspace
+```
+
+> Não use os alias raiz legados removidos (`pnpm dev`, `pnpm start`, `pnpm daemon`). `pnpm tools-dev` é o único ponto de entrada do ciclo de vida local.
+
+### Configurar o GLM como backend
+
+Depois que o Z-Design estiver rodando, aponte-o para o GLM para que toda geração passe pelo GLM-5.2:
+
+1. Abra o app e vá para **Configurações → Modo de execução**.
+2. Escolha **modo BYOK / API** (endpoint compatível com OpenAI).
+3. Preencha:
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4` (endpoint compatível OpenAI do Zhipu GLM)
+   - **apiKey** — sua GLM API Key de [open.bigmodel.cn](https://open.bigmodel.cn/)
+   - **model** — `glm-5.2` (ou outro modelo da família GLM ao qual você tenha acesso)
+4. Salve e digite um brief na view de entrada. O agente faz stream no painel esquerdo; o `<artifact>` renderiza ao vivo na direita.
+
+> Em implantações Docker / headless, os mesmos valores são enviados para `POST /api/proxy/openai/stream` com os mesmos campos `baseUrl` / `apiKey` / `model`; não é necessária uma superfície de configuração separada.
+
+### Verificar se está funcionando
+
+```bash
+# Código-fonte / modo dev — health do daemon
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — health de dentro da rede do compose
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+Um `200 OK` de `/api/health` indica que o daemon subiu e o build web está sendo servido. Para o quickstart completo, variáveis de ambiente, Nix flake e o fluxo de build empacotado, veja [`QUICKSTART.pt-BR.md`](QUICKSTART.pt-BR.md).
+
+---
+
 ## O que é o Open Design
 
 🎨 **A alternativa local-first e open-source ao [Claude Design][cd].** &nbsp;🖥️ **App de desktop nativo para macOS e Windows.** &nbsp;⚡ **Mais de 100 skills** · ✨ **150 sistemas `DESIGN.md` de nível profissional de marca** · 📦 **261 plugins prontos para uso.** &nbsp;🖼️ Gera **protótipos web · desktop · mobile**, **dashboards / artefatos ao vivo**, **decks**, **imagens**, **vídeo**, além de motion graphics com **HyperFrames**. 🔒 Preview em iframe em sandbox · exportação para HTML / PDF / PPTX / MP4. &nbsp;🤖 **Roda em Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity e mais 21 CLIs locais**, ou em qualquer endpoint compatível com OpenAI via BYOK.

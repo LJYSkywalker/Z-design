@@ -29,6 +29,144 @@
 
 ---
 
+## このプロジェクトについて
+
+> 🍃 **本プロジェクトは [Open Design](https://github.com/nexu-io/open-design) をベースに、[GLM（Zhipu）](https://www.zhipuai.cn/) 向けに最適化・改良したものです。** 上流 Open Design の完全な Agentic デザインワークスペースを維持しつつ、エージェントループ・プロンプト・モデル連携を GLM-5.2 のツール呼び出し向けに調整し、Claude 専用ではなく GLM ファミリーでネイティブに動作するようにしています。
+
+オリジナルのプロダクト、スキル、デザインシステム、プラグインの功績は Open Design チームとコントリビューターに帰属します。本フォークが主に行うのは：
+
+- デフォルトのエージェントランタイムを **GLM-5.2** に切替。
+- GLM のツール呼び出し挙動に合わせてシステムプロンプト・出力契約・artifact ストリーミングを調整。
+- 上流のスキル・デザインシステム・プラグションを維持し、オープンなエコシステムを引き続き利用可能に。
+
+上流プロダクトは [`nexu-io/open-design`](https://github.com/nexu-io/open-design) を参照してください。
+
+---
+
+## デプロイ
+
+Z-Design は、ローカルファーストのデスクトップアプリ、Docker イメージ、ソースからの実行という 3 つの形態で提供されます。以下のコマンドはすべて本リポジトリを使用します。
+
+### 前提条件
+
+| 方式 | 要件 |
+|---|---|
+| デスクトップアプリ | macOS（Apple Silicon / Intel x64）または Windows（x64）。他の依存は不要。 |
+| Docker | Docker Desktop + Docker Compose v2 |
+| ソースから | Node.js `~24`、pnpm `10.33.x`（Corepack 経由）。macOS / Linux / WSL2 が主対応、Windows ネイティブはベストエフォート。 |
+
+### 方式 A — デスクトップアプリ（設定不要、推奨）
+
+[GitHub Releases](https://github.com/Aqu-210L/Z-design/releases) から各プラットフォームの最新ビルドをダウンロード：
+
+- **macOS** — Apple Silicon と Intel x64
+- **Windows** — x64
+- **Linux** — AppImage（オプション）
+
+インストール後、アプリは `PATH` 上のすべてのコーディングエージェント CLI を自動検出し、100+ のスキルと 150 のデザインシステムを読み込み、エントリビューでブリーフを入力できます。GLM をバックエンドにするには、実行モードを **BYOK / API モード** に切替え、GLM の API Key とエンドポイントを入力します。
+
+### 方式 B — Docker（シングルコンテナ、ヘッドレス）
+
+公開イメージはデーモンを実行し、`7456` ポートで静的 Web ビルドを提供します。
+
+```bash
+# 1. クローン
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. 環境変数を準備（安全な API token を生成）
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. 起動
+docker compose up -d
+
+# 4. アクセス
+#    http://localhost:7456
+```
+
+よく使う Docker コマンド：
+
+```bash
+docker compose logs -f        # ログを追跡
+docker compose restart        # 再起動
+docker compose pull && docker compose up -d   # 最新イメージに更新
+docker compose down           # 停止
+docker compose down -v        # 停止してローカルデータを削除
+```
+
+`deploy/.env` の主要変数：
+
+```env
+OPEN_DESIGN_PORT=7456                       # ホストポート（127.0.0.1 にバインド）
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # ドメイン背後の CORS オリジン
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # イメージタグ
+ZD_API_TOKEN=                                # 必須 — openssl rand -hex 32 で生成
+```
+
+> **公開公開：** Compose は localhost にバインドしたまま、認証付きリバースプロキシ、SSH トンネル、VPN 経由で Z-Design を公開ネットワークに公開してください。手前に nginx を置く場合、SSE ルートのバッファリングを無効化（`proxy_buffering off; gzip off;`）しないと、エージェントの長いストリームが切断されます。
+
+### 方式 C — ソースから実行（開発モード）
+
+```bash
+# 1. クローン
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. ツールチェーン（Node 24 + pnpm 10.33.x、Corepack 経由）
+corepack enable
+pnpm install
+
+# 3. daemon CLI をビルド（`od` コマンドが依存）
+pnpm --filter @open-design/daemon build
+
+# 4. フォアグラウンドで daemon + web を起動
+pnpm tools-dev run web
+# tools-dev が出力した web URL を開く
+```
+
+その他のライフサイクルコマンド：
+
+```bash
+pnpm tools-dev                       # バックグラウンドで daemon + web + desktop 起動
+pnpm tools-dev start web             # バックグラウンドで daemon + web 起動
+pnpm tools-dev status                # 管理ランタイムの状態を確認
+pnpm tools-dev logs                  # daemon/web/desktop のログを表示
+pnpm tools-dev stop                  # 管理ランタイムを停止
+pnpm typecheck                       # ワークスペースの型チェック
+```
+
+> 削除されたレガシーのルートコマンド（`pnpm dev`、`pnpm start`、`pnpm daemon`）は使わないでください。`pnpm tools-dev` が唯一のローカルライフサイクルエントリポイントです。
+
+### GLM をバックエンドに設定
+
+Z-Design 起動後、GLM に向け、すべての生成を GLM-5.2 経由にします：
+
+1. アプリを開き、**設定 → 実行モード** に進みます。
+2. **BYOK / API モード**（OpenAI 互換エンドポイント）を選択。
+3. 入力：
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4`（Zhipu GLM の OpenAI 互換エンドポイント）
+   - **apiKey** — [open.bigmodel.cn](https://open.bigmodel.cn/) での GLM API Key
+   - **model** — `glm-5.2`（またはアクセス権のある他の GLM ファミリーモデル）
+4. 保存し、エントリビューでブリーフを入力。エージェントは左ペインにストリーム出力し、`<artifact>` が右側にリアルタイム描画されます。
+
+> Docker / ヘッドレスデプロイでも、同じ値を `POST /api/proxy/openai/stream` に同じ `baseUrl` / `apiKey` / `model` フィールドで送信します。個別の設定面は不要です。
+
+### 動作確認
+
+```bash
+# ソース / 開発モード — daemon ヘルスチェック
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — compose ネットワーク内からチェック
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+`/api/health` が `200 OK` を返せばデーモン起動済み、Web ビルドも提供中です。完全なクイックスタート、環境変数、Nix flake、パッケージビルドフローは [`QUICKSTART.ja-JP.md`](QUICKSTART.ja-JP.md) を参照してください。
+
+---
+
 ## Open Design とは
 
 🎨 **ローカルファーストでオープンソースの [Claude Design][cd] 代替ツール。** &nbsp;🖥️ **macOS と Windows 向けのネイティブデスクトップアプリ。** &nbsp;⚡ **100 種類以上のスキル** · ✨ **150 のブランドグレード `DESIGN.md` システム** · 📦 **261 のすぐ使えるプラグイン。** &nbsp;🖼️ **ウェブ · デスクトップ · モバイルのプロトタイプ**、**ライブダッシュボード／アーティファクト**、**スライド**、**画像**、**動画**、さらに **HyperFrames** のモーショングラフィックスを生成。🔒 サンドボックス化された iframe プレビュー · HTML / PDF / PPTX / MP4 エクスポート。&nbsp;🤖 **Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity および 21 のローカル CLI 上で動作**、もしくは BYOK 経由で任意の OpenAI 互換エンドポイント上でも動作します。

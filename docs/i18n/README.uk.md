@@ -29,6 +29,144 @@
 
 ---
 
+## Про цей проєкт
+
+> 🍃 **Цей проєкт базується на [Open Design](https://github.com/nexu-io/open-design) та оптимізований і вдосконалений для [GLM (Zhipu)](https://www.zhipuai.cn/).** Він зберігає повне агентське дизайн-середовище вихідного Open Design, адаптуючи цикл агента, промпти та інтеграцію моделі під tool-calling GLM-5.2, щоб весь потік працював нативно на сімействі GLM, а не лише на Claude.
+
+Заслуга за оригінальний продукт, скіли, дизайн-системи та плагіни належить команді Open Design та її контриб'юторам. Цей форк зосереджений на:
+
+- Перемиканні runtime агента за замовчуванням на **GLM-5.2**.
+- Підгонці системного промпту, контракту виведення та потокового передавання артефактів під поведінку tool-calling у GLM.
+- Збереженні скілів, дизайн-систем і плагінів із апстріму, щоб відкрита екосистема продовжувала працювати.
+
+Про вихідний продукт див. [`nexu-io/open-design`](https://github.com/nexu-io/open-design).
+
+---
+
+## Розгортання
+
+Z-Design постає як локально-орієнтований десктоп-додаток, як Docker-образ та як проєкт для запуску з початкового коду. Оберіть підхідний шлях. Усі команди нижче використовують цей репозиторій.
+
+### Попередні вимоги
+
+| Шлях | Вимоги |
+|---|---|
+| Десктоп-додаток | macOS (Apple Silicon / Intel x64) або Windows (x64). Більше нічого не потрібно. |
+| Docker | Docker Desktop + Docker Compose v2 |
+| З початкового коду | Node.js `~24`, pnpm `10.33.x` (через Corepack). macOS / Linux / WSL2 основні; нативна Windows — найкращі зусилля. |
+
+### Варіант A — Десктоп-додаток (без налаштувань, рекомендовано)
+
+Завантажте свіжий білд для вашої платформи з [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases):
+
+- **macOS** — Apple Silicon та Intel x64
+- **Windows** — x64
+- **Linux** — AppImage (опціонально)
+
+Після встановлення додаток автоматично виявляє кожну CLI код-агента у вашому `PATH`, завантажує 100+ скілів і 150 дизайн-систем і дозволяє ввести бриф у вхідному поданні. Щоб використовувати GLM як бекенд, перемкніть режим виконання у **режим BYOK / API** і вставте GLM API-ключ та endpoint.
+
+### Варіант B — Docker (один контейнер, headless)
+
+Опублікований образ запускає демона і віддає статичний веб-білд на порту `7456`.
+
+```bash
+# 1. Клонувати
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Підготувати змінні середовища (генерує безпечний API-токен)
+cd deploy
+cp .env.example .env
+echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
+
+# 3. Запустити
+docker compose up -d
+
+# 4. Відкрити
+#    http://localhost:7456
+```
+
+Часті команди Docker:
+
+```bash
+docker compose logs -f        # стежити за логами
+docker compose restart        # перезапустити
+docker compose pull && docker compose up -d   # оновити до останнього образу
+docker compose down           # зупинити
+docker compose down -v        # зупинити і стерти локальні дані
+```
+
+Ключові змінні `deploy/.env`:
+
+```env
+OPEN_DESIGN_PORT=7456                       # порт хоста (прив'язаний до 127.0.0.1)
+OPEN_DESIGN_ALLOWED_ORIGINS=https://yourdomain.com   # CORS-джерела за доменом
+OPEN_DESIGN_IMAGE=ghcr.io/nexu-io/od:latest # тег образу
+ZD_API_TOKEN=                                # ОБОВ'ЯЗКОВО — згенеруйте: openssl rand -hex 32
+```
+
+> **Публічне розкриття:** тримайте Compose прив'язаним до localhost і ставте автентифікований reverse proxy, SSH-тунель або VPN перед тим, як відкривати Z-Design назовні. Якщо попереду стоїть nginx, тримайте SSE-маршрути без буферизації (`proxy_buffering off; gzip off;`), інакше довгі потоки агента будуть обрізані.
+
+### Варіант C — Запуск з початкового коду (розробка)
+
+```bash
+# 1. Клонувати
+git clone https://github.com/Aqu-210L/Z-design.git
+cd Z-design
+
+# 2. Toolchain (Node 24 + pnpm 10.33.x через Corepack)
+corepack enable
+pnpm install
+
+# 3. Зібрати CLI демона (потрібна для команди `od`)
+pnpm --filter @open-design/daemon build
+
+# 4. Запустити демон + web на передньому плані
+pnpm tools-dev run web
+# відкрийте web-URL, який надрукує tools-dev
+```
+
+Інші команди життєвого циклу:
+
+```bash
+pnpm tools-dev                       # демон + web + десктоп у фоні
+pnpm tools-dev start web             # демон + web у фоні
+pnpm tools-dev status                # перевірити керовані runtime
+pnpm tools-dev logs                  # показати логи демона/web/десктопа
+pnpm tools-dev stop                  # зупинити керовані runtime
+pnpm typecheck                       # typecheck робочого простору
+```
+
+> Не використовуйте видалені застарілі кореневі аліаси (`pnpm dev`, `pnpm start`, `pnpm daemon`). `pnpm tools-dev` — єдиний локальний вхід життєвого циклу.
+
+### Налаштувати GLM як бекенд
+
+Після запуску Z-Design спрямуйте його на GLM, щоб кожна генерація йшла через GLM-5.2:
+
+1. Відкрийте додаток і перейдіть до **Налаштування → Режим виконання**.
+2. Оберіть **режим BYOK / API** (OpenAI-сумісний endpoint).
+3. Заповніть:
+   - **baseUrl** — `https://open.bigmodel.cn/api/paas/v4` (OpenAI-сумісний endpoint Zhipu GLM)
+   - **apiKey** — ваш GLM API-ключ із [open.bigmodel.cn](https://open.bigmodel.cn/)
+   - **model** — `glm-5.2` (або інша модель сімейства GLM, до якої ви маєте доступ)
+4. Збережіть і введіть бриф у вхідному поданні. Агент стрімить у ліву панель; `<artifact>` рендериться наживо справа.
+
+> У Docker / headless-розгортаннях ті ж значення надсилаються до `POST /api/proxy/openai/stream` з тими ж полями `baseUrl` / `apiKey` / `model`; окрема поверхня налаштувань не потрібна.
+
+### Перевірка роботи
+
+```bash
+# Початковий код / dev-режим — перевірка демона
+curl -s http://127.0.0.1:7456/api/health
+
+# Docker — перевірка зсередини мережі compose
+docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
+```
+
+`200 OK` від `/api/health` означає, що демон запущений, а веб-білд віддається. Повний quickstart, змінні середовища, Nix flake та процес пакетного білду див. у кореневому `QUICKSTART.md`.
+
+---
+
 ## Що таке Open Design
 
 🎨 **Локально-орієнтована альтернатива [Claude Design][cd] з відкритим кодом.** &nbsp;🖥️ **Нативний десктопний застосунок для macOS і Windows.** &nbsp;⚡ **100+ навичок** · ✨ **150 систем `DESIGN.md` брендового рівня** · 📦 **261 готовий до використання плагін.** &nbsp;🖼️ Генерує **вебпрототипи · десктопні · мобільні прототипи**, **живі дашборди / артефакти**, **презентації**, **зображення**, **відео**, а також моушн-графіку **HyperFrames**. 🔒 Попередній перегляд у пісочниці iframe · експорт у HTML / PDF / PPTX / MP4. &nbsp;🤖 **Працює на Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity і 21 локальному CLI**, або на будь-якій OpenAI-сумісній кінцевій точці через BYOK.
