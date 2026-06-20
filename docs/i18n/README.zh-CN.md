@@ -1,13 +1,9 @@
-<h1 align="center">Open Design：The GLM-native agentic design workspace</h1>
+<h1 align="center">Z-design：The GLM-native agentic design workspace</h1>
 
-> 🔥 **Open Design 0.10.0 正式发布：All-in-one 的 Agentic 设计工作台。** 设计的全流程从此只需一个窗口——从一个模糊的想法出发，到发现参考、收集素材、交互式编辑、评论排队、打磨动效，再交付给编辑器或 Code Agent，全程无需离开应用。配合多会话并行，它不再只是一个助手，而是一支为你工作的本地设计团队。[下载 0.10.0](https://github.com/Aqu-210L/Z-design/releases) · [参与讨论](https://github.com/Aqu-210L/Z-design/discussions/4153)
+> 🔥 **Z-design 0.10.0 正式发布：All-in-one 的 Agentic 设计工作台。** 设计的全流程从此只需一个窗口——从一个模糊的想法出发，到发现参考、收集素材、交互式编辑、评论排队、打磨动效，再交付给编辑器或 Code Agent，全程无需离开应用。配合多会话并行，它不再只是一个助手，而是一支为你工作的本地设计团队。[下载 0.10.0](https://github.com/Aqu-210L/Z-design/releases) · [参与讨论](https://github.com/Aqu-210L/Z-design/discussions/4153)
 >
-> ⚡ **Open Design AMR（Agentic Model Router）——官方模型服务。** 一次充值，即可在 Open Design 里直接使用 GPT、Claude、Gemini 与 DeepSeek：20+ 旗舰模型、零配置、按真实 token 用量计费。[立即体验](https://open-design.ai/amr/)
->
-> 🏅 **Open Design Fellow 计划正式开放。** 如果你也相信设计应该是开放的，欢迎成为 Open Design Fellow，和核心团队一起打磨产品，让更多人参与并定义设计的未来。详情 → [`MAINTAINERS.md`](../../MAINTAINERS.md) 与 [Discord](https://discord.gg/9ptkbbqRu)。
-
 <p align="center">
-  <img src="https://repo-assets.open-design.ai/resources/images/hero.png" alt="Open Design — The GLM-native agentic design workspace · 150 Design Systems · 261 Plugins · 21 Coding Agents · 14 Media Providers" width="100%" />
+  <img src="https://repo-assets.open-design.ai/resources/images/hero.png" alt="Z-design — The GLM-native agentic design workspace · 150 Design Systems · 261 Plugins · 21 Coding Agents · 14 Media Providers" width="100%" />
 </p>
 
 <p align="center">
@@ -33,7 +29,7 @@
 
 > 🍃 **本项目基于 [Open Design](https://github.com/nexu-io/open-design)，针对 [GLM（智谱）](https://www.zhipuai.cn/) 进行了优化和改进。** 它保留了上游 Open Design 完整的 Agentic 设计工作台，同时对 Agent 循环、提示词和模型接入做了针对 GLM-5.2 工具调用的适配，让整套流程原生运行在 GLM 系列模型上，而不再只依赖 Claude。
 
-原始产品、技能、设计系统和插件的功劳归属 Open Design 团队及其贡献者。本 Fork 主要做的是：
+原始产品、技能、设计系统和插件的功劳归属上游 Open Design 团队及其贡献者。本 Fork（由 [Aqu-210L](https://github.com/Aqu-210L) 维护）主要做的是：
 
 - 将默认的 Agent 运行时切换到 **GLM-5.2**。
 - 针对 GLM 的工具调用行为调优系统提示词、输出契约和 artifact 流式输出。
@@ -167,11 +163,11 @@ docker compose exec open-design wget -qO- http://127.0.0.1:7456/api/health
 
 ---
 
-## 什么是 Open Design
+## 什么是 Z-design
 
 🎨 **本地优先、开源的 [Claude Design][cd] 替代品。** &nbsp;🖥️ **macOS 与 Windows 原生桌面应用。** &nbsp;⚡ **100+ 技能** · ✨ **150 个品牌级 `DESIGN.md` 系统** · 📦 **261 个开箱即用的插件。** &nbsp;🖼️ 可生成 **Web · 桌面 · 移动端原型**、**实时仪表盘 / 工件**、**演示文稿**、**图片**、**视频**，以及 **HyperFrames** 动态图形。🔒 沙箱 iframe 预览 · HTML / PDF / PPTX / MP4 导出。&nbsp;🤖 **运行于 Claude Code · OpenClaw · Codex · Cursor · OpenCode · Qwen · Copilot · Hermes · Kimi · Antigravity 等 21 个本地 CLI**，或通过 BYOK 接入任何 OpenAI 兼容端点。
 
-Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agent 原生**循环——发现需求、锁定方向、流式输出工件、评审、交付——不再封闭，而是变成了一个由**技能、设计系统和插件组成的文件系统**，你笔记本电脑上已有的编码 Agent 就能读取、编写和混搭。你的 CLI 变成设计引擎，你的笔记本变成工作坊，团队的 `DESIGN.md` 变成品牌契约。
+Z-design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agent 原生**循环——发现需求、锁定方向、流式输出工件、评审、交付——不再封闭，而是变成了一个由**技能、设计系统和插件组成的文件系统**，你笔记本电脑上已有的编码 Agent 就能读取、编写和混搭。你的 CLI 变成设计引擎，你的笔记本变成工作坊，团队的 `DESIGN.md` 变成品牌契约。
 
 它也是 **Agent 时代的 Figma 替代品**——不再在画布上推像素，而是用真实 CSS、真实字体、真实组件交付单页工件，直接导出 HTML / PDF / PPTX / MP4——已经由你的设计系统塑形，已经可以在你日常使用的 Agent 中运行。
 
@@ -181,7 +177,7 @@ Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agen
 
 ## 产品速览
 
-快速看懂 Open Design 长什么样、能做什么。从 **Home** 发起创作，用 **Automation** 编排重复流程，在 **Design System** 沉淀品牌契约，靠 **Plugin** 与 **集成** 扩展能力；进入任一项目的 **Studio**，同一套设计系统即可流式产出原型、实时工件、HyperFrame、演示文稿与图片。
+快速看懂 Z-design 长什么样、能做什么。从 **Home** 发起创作，用 **Automation** 编排重复流程，在 **Design System** 沉淀品牌契约，靠 **Plugin** 与 **集成** 扩展能力；进入任一项目的 **Studio**，同一套设计系统即可流式产出原型、实时工件、HyperFrame、演示文稿与图片。
 
 ### 核心页面
 
@@ -212,7 +208,7 @@ Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agen
 </td>
 <td width="50%" valign="top">
 <img src="https://repo-assets.open-design.ai/resources/images/product/integrations.png" alt="Integrations 页" /><br/>
-<sub><b>集成</b>——接入外部系统与 MCP 工具，把 Open Design 用到任意 IDE、脚本与自动化中。</sub>
+<sub><b>集成</b>——接入外部系统与 MCP 工具，把 Z-design 用到任意 IDE、脚本与自动化中。</sub>
 </td>
 </tr>
 </table>
@@ -248,7 +244,7 @@ Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agen
 
 ## 平台兼容性
 
-> Open Design 以 **技能、CLI 和 MCP 服务器**的形式交付，主流编码 Agent 可原生消费。装好 OD 后，一行 `od mcp install <agent>` 把 MCP 服务器 wire 进对应 Agent 的配置，任何 Agent 内调用相同工具。
+> Z-design 以 **技能、CLI 和 MCP 服务器**的形式交付，主流编码 Agent 可原生消费。装好 OD 后，一行 `od mcp install <agent>` 把 MCP 服务器 wire 进对应 Agent 的配置，任何 Agent 内调用相同工具。
 
 | 编码 Agent / 平台 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 状态 &nbsp;&nbsp; | 一行命令安装 MCP 服务器 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
 |---|:---:|---|
@@ -271,7 +267,7 @@ Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agen
 `od mcp install <agent> --print` 干跑预览 · `--uninstall` 卸载 · 完整清单 `od mcp install --help`。
 
 <p align="center">
-  <img src="https://repo-assets.open-design.ai/resources/images/coding-agents.png" alt="Open Design 支持的 21 个编码 Agent CLI — Claude Code · Codex · OpenCode · Hermes · Antigravity · Gemini · Grok Build · Kimi · Cursor Agent · Qwen · Qoder · GitHub Copilot · Pi · Kiro · Kilo · Mistral Vibe · DeepSeek · Reasonix · Aider · Devin · Trae" width="100%" />
+  <img src="https://repo-assets.open-design.ai/resources/images/coding-agents.png" alt="Z-design 支持的 21 个编码 Agent CLI — Claude Code · Codex · OpenCode · Hermes · Antigravity · Gemini · Grok Build · Kimi · Cursor Agent · Qwen · Qoder · GitHub Copilot · Pi · Kiro · Kilo · Mistral Vibe · DeepSeek · Reasonix · Aider · Devin · Trae" width="100%" />
 </p>
 
 **未安装任何 CLI？** `POST /api/proxy/{anthropic,openai,azure,google,ollama,senseaudio}/stream` 的 BYOK 代理提供同样的循环（无需 spawn 进程）——粘贴 `baseUrl` + `apiKey` + `model`，支持 OpenAI、Anthropic、Azure OpenAI、Google Gemini、Ollama、LM Studio、vLLM 或任何 OpenAI 兼容端点。每个目标的 SSRF 防护在守护进程边缘拦截内网 IP / link-local / CGNAT。
@@ -371,7 +367,7 @@ Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agen
 
 ### 5 · 视频与 HyperFrames——Agent 原生动态图形
 
-**[HyperFrames][hyperframes]** 是 HeyGen 的开源 Agent 原生视频框架，在 Open Design 中作为一等公民集成。Agent 编写 HTML + CSS + GSAP，HyperFrames 通过 headless Chrome + FFmpeg 渲染为确定性 MP4。搭配 **Seedance 2.0** 实现影视级 t2v / i2v，**Veo 3 / Sora 2 / Kling 2** 提供路由模型变体，**Suno v5 / Lyria 2** 提供音频底座。
+**[HyperFrames][hyperframes]** 是 HeyGen 的开源 Agent 原生视频框架，在 Z-design 中作为一等公民集成。Agent 编写 HTML + CSS + GSAP，HyperFrames 通过 headless Chrome + FFmpeg 渲染为确定性 MP4。搭配 **Seedance 2.0** 实现影视级 t2v / i2v，**Veo 3 / Sora 2 / Kling 2** 提供路由模型变体，**Suno v5 / Lyria 2** 提供音频底座。
 
 <table>
 <tr>
@@ -394,11 +390,11 @@ Open Design 是这样一种产物：Anthropic 随 Claude Design 推出的 **Agen
 
 ---
 
-## 为什么选择 Open Design
+## 为什么选择 Z-design
 
 > **2026 年 4 月，Anthropic 发布了 [Claude Design][cd]——LLM 第一次不再写文章，而是直接交付设计工件。** 它迅速传播。然而它始终闭源、仅付费、仅云端，锁定 Anthropic 的模型、Anthropic 的技能、Anthropic 的表面。没有 Checkout，没有自托管，没有 Vercel 部署，不能换成你自己的 Agent。
 
-Open Design (OD) 是开源替代品。同样的循环，同样的工件优先心智模型，没有任何锁定：
+Z-design (OD) 是开源替代品。同样的循环，同样的工件优先心智模型，没有任何锁定：
 
 - 🤖 **Agent 原生，不绑定模型。** 我们不发布 Agent。你 `PATH` 上已有的 `claude` / `codex` / `cursor-agent` / `copilot` / `hermes` / `kimi` 就是设计引擎。一键切换。
 - 🧠 **默认品牌级。** 每次渲染都读取激活的 `DESIGN.md`——9 节 schema 涵盖色板、字体、间距、动效、语言风格、反模式。150 个系统随仓库发布（Linear、Stripe、Vercel、Airbnb、Apple、Tesla、Notion、Anthropic、Cursor、Supabase、Figma……）。放入文件夹，选择器自动识别。
@@ -409,7 +405,7 @@ Open Design (OD) 是开源替代品。同样的循环，同样的工件优先心
 
 ### 对比
 
-| | [Claude Design][cd] | Figma | Lovable / v0 / Bolt | **Open Design** |
+| | [Claude Design][cd] | Figma | Lovable / v0 / Bolt | **Z-design** |
 |---|---|---|---|---|
 | 开源 | ❌ | ❌ | ❌ | **✅ Apache-2.0** |
 | 自托管 / 桌面 | ❌ | ❌ | ❌ | **✅ macOS + Windows + Vercel** |
@@ -426,7 +422,7 @@ Open Design (OD) 是开源替代品。同样的循环，同样的工件优先心
 
 ### 🖥️ 下载桌面应用（推荐——零配置）
 
-使用 Open Design 最快的方式。无需 Node、pnpm 或克隆仓库。
+使用 Z-design 最快的方式。无需 Node、pnpm 或克隆仓库。
 
 - **macOS**（Apple Silicon · Intel x64）→ [**open-design.ai**](https://open-design.ai/) 或 [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
 - **Windows**（x64）→ [**open-design.ai**](https://open-design.ai/) 或 [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
@@ -436,7 +432,7 @@ Open Design (OD) 是开源替代品。同样的循环，同样的工件优先心
 
 ### 🤖 安装到你的编码 Agent（无 UI）
 
-你可以在完全不打开 GUI 的情况下使用 Open Design——在 Claude Code、Codex、Cursor、Copilot、OpenClaw、Antigravity、Hermes、Kimi 等中作为技能、插件或 MCP 服务器调用。
+你可以在完全不打开 GUI 的情况下使用 Z-design——在 Claude Code、Codex、Cursor、Copilot、OpenClaw、Antigravity、Hermes、Kimi 等中作为技能、插件或 MCP 服务器调用。
 
 ```bash
 # 一行命令安装到你正在使用的 Agent：
@@ -468,7 +464,7 @@ docker compose up -d
 
 [![Deploy on Sealos](https://sealos.io/Deploy-on-Sealos.svg)](https://sealos.io/products/app-store/open-design/)
 
-Sealos App Store 模板会运行已发布的 Open Design Docker 镜像，提供持久化工作区存储，并在公网代理层启用 Basic Auth。自定义公开或共享 Docker 部署请遵循 [`deploy/README.md`](../../deploy/README.md#local-compose) 中的反向代理和 `OPEN_DESIGN_ALLOWED_ORIGINS` 指引。
+Sealos App Store 模板会运行已发布的 Z-design Docker 镜像，提供持久化工作区存储，并在公网代理层启用 Basic Auth。自定义公开或共享 Docker 部署请遵循 [`deploy/README.md`](../../deploy/README.md#local-compose) 中的反向代理和 `OPEN_DESIGN_ALLOWED_ORIGINS` 指引。
 
 ### 🧑‍💻 从源码运行
 
@@ -489,13 +485,13 @@ Node `~24`，pnpm `10.33.x`。Windows 用户请参见 [`docs/windows-troubleshoo
 2. **设计师（或 Agent）锁定方向。** 没有品牌？从 5 个精选方向中选择。有品牌？放入截图 / URL → Agent 连接 GitHub、导入 Figma、编纂可复用的 `DESIGN.md`。
 3. **Agent 输出首个 `<artifact>`。** 插件 + 技能 + `DESIGN.md` 已绑定。流式传输到沙箱 iframe 中，原地可编辑，不是"从头重新生成"。
 4. **交付给工程团队。** 工件是真实的 HTML/CSS——放入 Cursor、Codex 或 Claude Code 中继续作为代码开发。或直接导出 PPTX / PDF / MP4 交给营销团队。
-5. **Open Design 越用越聪明。** 你的截图、字体、色板和已确认的工件会累积为下次会话的默认值。更少的重复劳动，更少的偏差。
+5. **Z-design 越用越聪明。** 你的截图、字体、色板和已确认的工件会累积为下次会话的默认值。更少的重复劳动，更少的偏差。
 
 ---
 
-## 从你的编码 Agent 使用 Open Design
+## 从你的编码 Agent 使用 Z-design
 
-Open Design 提供 **stdio MCP 服务器**和逐 Agent 的**安装脚本**。任何位于其他仓库的 MCP 兼容 Agent 都可以直接读取你本地 Open Design 项目的文件——token CSS、JSX 组件、入口 HTML——作为按名称查询的结构化 API。Agent 始终看到实时文件，而非过期的导出。
+Z-design 提供 **stdio MCP 服务器**和逐 Agent 的**安装脚本**。任何位于其他仓库的 MCP 兼容 Agent 都可以直接读取你本地 Z-design 项目的文件——token CSS、JSX 组件、入口 HTML——作为按名称查询的结构化 API。Agent 始终看到实时文件，而非过期的导出。
 
 ```bash
 # 一行命令安装（支持 16+ CLI）：
@@ -585,7 +581,7 @@ od skill list --scenario marketing
 
 ## 插件
 
-**261 个官方插件**位于 [`plugins/_official/`](../../plugins/_official/)。每个插件就是一个**可移植的 agent skill 文件夹**——一个 `SKILL.md`（任何支持 Agent Skills 的 Agent 都能读），外加一个可选的 `z-design.json` manifest（给 Open Design 提供 marketplace 元数据、输入参数、预览、流水线与权限声明）。直接跳转到分类浏览：
+**261 个官方插件**位于 [`plugins/_official/`](../../plugins/_official/)。每个插件就是一个**可移植的 agent skill 文件夹**——一个 `SKILL.md`（任何支持 Agent Skills 的 Agent 都能读），外加一个可选的 `z-design.json` manifest（给 Z-design 提供 marketplace 元数据、输入参数、预览、流水线与权限声明）。直接跳转到分类浏览：
 
 | 分类 | 数量 | 内容 |
 |---|---|---|
@@ -627,7 +623,7 @@ od plugin uninstall od-default       # 卸载
 
 ### 构建插件
 
-一个插件**最小只需要一个 `SKILL.md`**；要上架 Open Design marketplace，再加一个 `z-design.json`：
+一个插件**最小只需要一个 `SKILL.md`**；要上架 Z-design marketplace，再加一个 `z-design.json`：
 
 ```
 my-plugin/
@@ -652,7 +648,7 @@ pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
 
 ### 贡献插件
 
-1. 把插件文件夹放到 [`plugins/community/`](../../plugins/community/)（第三方插件），或——若想随 Open Design 一起内置——放到对应 tier 的 [`plugins/_official/`](../../plugins/_official/)。
+1. 把插件文件夹放到 [`plugins/community/`](../../plugins/community/)（第三方插件），或——若想随 Z-design 一起内置——放到对应 tier 的 [`plugins/_official/`](../../plugins/_official/)。
 2. 跑通校验：`od plugin validate`、`pnpm guard`、`pnpm --filter @open-design/plugin-runtime typecheck`。
 3. 按 [`plugins/spec/CONTRIBUTING.md`](../../plugins/spec/CONTRIBUTING.md) 的模板填 PR（ID、版本、lane、mode、权限、触发示例，视觉类附截图 / 预览）。
 4. 想发布到外部注册中心（skills.sh / ClawHub / 独立 GitHub）→ [`plugins/spec/PUBLISHING-REGISTRIES.md`](../../plugins/spec/PUBLISHING-REGISTRIES.md)。
@@ -742,7 +738,7 @@ pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
 
 ## 贡献
 
-Open Design 之所以持续前进，是因为贡献者——设计师、工程师、提示词作者——不断出现。许多最常用的技能、设计系统和插件都由核心团队以外的人编写。
+Z-design 之所以持续前进，是因为贡献者——设计师、工程师、提示词作者——不断出现。许多最常用的技能、设计系统和插件都由核心团队以外的人编写。
 
 ### 🎯 从哪里开始（最大杠杆，最小改动）
 
@@ -779,9 +775,9 @@ gh pr create --fill
 
 完整的 Agent 友好贡献流程、代码风格和 PR 标准 → [English](../../CONTRIBUTING.md)（[Deutsch](CONTRIBUTING.de.md) · [Français](CONTRIBUTING.fr.md) · [简体中文](CONTRIBUTING.zh-CN.md) · [日本語](CONTRIBUTING.ja-JP.md) · [Português](CONTRIBUTING.pt-BR.md)）。
 
-### 🏅 Open Design Fellow 计划
+### 🏅 Z-design Fellow 计划
 
-我们正在全球招募 **Open Design Fellow**——付费维护者，$1,000 / MR 免费 LLM 额度，官方授权在你所在地区推动增长，以及核心团队审查通道。详情 → [`MAINTAINERS.md`](../../MAINTAINERS.md) 和 [Discord](https://discord.gg/9ptkbbqRu) 上的公告。
+我们正在全球招募 **Z-design Fellow**——付费维护者，$1,000 / MR 免费 LLM 额度，官方授权在你所在地区推动增长，以及核心团队审查通道。详情 → [`MAINTAINERS.md`](../../MAINTAINERS.md) 和 [Discord](https://discord.gg/9ptkbbqRu) 上的公告。
 
 ---
 
@@ -815,7 +811,7 @@ gh pr create --fill
 感谢每一位参与者——代码、文档、反馈、一个精准的 Issue、一个新技能、一个新设计系统。
 
 <a href="https://github.com/Aqu-210L/Z-design/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=nexu-io/open-design&max=500&columns=20&anon=1&cache_bust=2026-05-30" alt="Open Design 贡献者" />
+  <img src="https://contrib.rocks/image?repo=nexu-io/open-design&max=500&columns=20&anon=1&cache_bust=2026-05-30" alt="Z-design 贡献者" />
 </a>
 
 ---
@@ -823,7 +819,7 @@ gh pr create --fill
 ## 仓库活跃度
 
 <picture>
-  <img alt="Open Design——仓库指标" src="https://repo-assets.open-design.ai/resources/images/github-metrics.svg" />
+  <img alt="Z-design——仓库指标" src="https://repo-assets.open-design.ai/resources/images/github-metrics.svg" />
 </picture>
 
 上方 SVG 由 [`.github/workflows/metrics.yml`](../../.github/workflows/metrics.yml) 使用 [`lowlighter/metrics`](https://github.com/lowlighter/metrics) 每日重新生成。
@@ -833,7 +829,7 @@ gh pr create --fill
 ## 给我们 Star
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="在 GitHub 上给 Open Design 一个 Star — github.com/Aqu-210L/Z-design" width="100%" /></a>
+  <a href="https://github.com/Aqu-210L/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="在 GitHub 上给 Z-design 一个 Star — github.com/Aqu-210L/Z-design" width="100%" /></a>
 </p>
 
 如果这为你节省了三十分钟，请给一个 ★。Star 不能当饭吃——但它告诉下一位设计师、Agent 和贡献者，这个实验值得他们关注。一次点击，三秒钟，真实的信号。
@@ -842,7 +838,7 @@ gh pr create --fill
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=nexu-io/open-design&type=Date&theme=dark&cache_bust=2026-05-28" />
     <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=nexu-io/open-design&type=Date&cache_bust=2026-05-28" />
-    <img alt="Open Design Star 历史" src="https://api.star-history.com/svg?repos=nexu-io/open-design&type=Date&cache_bust=2026-05-28" />
+    <img alt="Z-design Star 历史" src="https://api.star-history.com/svg?repos=nexu-io/open-design&type=Date&cache_bust=2026-05-28" />
   </picture>
 </a>
 
@@ -860,7 +856,7 @@ gh pr create --fill
 | [`multica-ai/multica`](https://github.com/multica-ai/multica) | 守护进程 + 适配器架构——PATH 扫描 Agent 检测、本地守护进程作为唯一特权进程。 |
 | [`VoltAgent/awesome-design-md`](https://github.com/VoltAgent/awesome-design-md) | 9 节 `DESIGN.md` schema 和 70 个产品系统的来源。 |
 | [`bergside/awesome-design-skills`](https://github.com/bergside/awesome-design-skills) | `design-systems/` 下新增的 57 个设计技能的来源。 |
-| [`heygen-com/hyperframes`](https://github.com/heygen-com/hyperframes) | HTML→MP4 动态图形框架，在 Open Design 中作为 `hyperframes-html` 一等公民集成。 |
+| [`heygen-com/hyperframes`](https://github.com/heygen-com/hyperframes) | HTML→MP4 动态图形框架，在 Z-design 中作为 `hyperframes-html` 一等公民集成。 |
 | [Claude Code skills][skill] | 我们原样采用的 `SKILL.md` 约定。 |
 
 详细溯源 → [`docs/references.md`](../../docs/references.md)。
