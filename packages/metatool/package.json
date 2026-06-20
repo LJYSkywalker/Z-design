@@ -1,6 +1,6 @@
 {
   "name": "@z-design/metatool",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Internal metadata helpers for checking freshness of built Open Design tool dist outputs.",

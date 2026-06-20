@@ -1,6 +1,6 @@
 {
   "name": "@z-design/contracts",
-  "version": "0.11.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Shared pure TypeScript contracts for the Open Design web/daemon boundary.",

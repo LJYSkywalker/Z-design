@@ -1,6 +1,6 @@
 {
   "name": "@z-design/components",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Shared Open Design React UI primitives.",

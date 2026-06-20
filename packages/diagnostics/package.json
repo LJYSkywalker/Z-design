@@ -1,6 +1,6 @@
 {
   "name": "@z-design/diagnostics",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Diagnostics export: log collection, redaction, and zip packaging shared by daemon and desktop.",

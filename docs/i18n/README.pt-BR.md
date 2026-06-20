@@ -1,6 +1,6 @@
 <h1 align="center">Z-design: a alternativa open-source ao Claude Design</h1>
 
-> 🔥 **O Z-design 0.10.0 chegou: o espaço de trabalho de design Agentic tudo-em-um.** Todo o ofício agora vive em uma única janela — vá de uma ideia vaga à descoberta de referências, coleta de material, edição interativa, fila de comentários, polimento de animações e entrega para um editor ou um Code Agent — sem sair do app. Com sessões em paralelo, deixa de parecer um assistente e passa a parecer um time de design local trabalhando para você. [Baixar 0.10.0](https://github.com/Aqu-210L/Z-design/releases) · [Participar da discussão](https://github.com/Aqu-210L/Z-design/discussions/4153)
+> 🔥 **O Z-design 1.0.0 chegou: o espaço de trabalho de design Agentic tudo-em-um.** Todo o ofício agora vive em uma única janela — vá de uma ideia vaga à descoberta de referências, coleta de material, edição interativa, fila de comentários, polimento de animações e entrega para um editor ou um Code Agent — sem sair do app. Com sessões em paralelo, deixa de parecer um assistente e passa a parecer um time de design local trabalhando para você. [Baixar 1.0.0](https://github.com/LJYSkywalker/Z-design/releases) · [Participar da discussão](https://github.com/LJYSkywalker/Z-design/discussions/4153)
 >
 <p align="center">
   <img src="https://repo-assets.open-design.ai/resources/images/hero.png" alt="Z-design — The GLM-native agentic design workspace · 150 Design Systems · 261 Plugins · 21 Coding Agents · 14 Media Providers" width="100%" />
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design/releases"><img alt="release" src="https://img.shields.io/github/v/release/nexu-io/open-design?style=flat&color=blueviolet&label=release&include_prereleases&display_name=tag" /></a>
+  <a href="https://github.com/LJYSkywalker/Z-design/releases"><img alt="release" src="https://img.shields.io/github/v/release/nexu-io/open-design?style=flat&color=blueviolet&label=release&include_prereleases&display_name=tag" /></a>
   <a href="../../LICENSE"><img alt="license" src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat" /></a>
   <a href="https://discord.gg/9ptkbbqRu"><img alt="discord" src="https://img.shields.io/discord/1479002485040480266?style=flat&logo=discord&logoColor=white&label=discord&color=5865F2&cacheSeconds=3600" /></a>
   <a href="QUICKSTART.pt-BR.md"><img alt="quickstart" src="https://img.shields.io/badge/quickstart-3%20commands-green?style=flat" /></a>
@@ -53,7 +53,7 @@ O Z-Design é distribuído como um app de desktop local-first, uma imagem Docker
 
 ### Opção A — App de desktop (zero config, recomendado)
 
-Baixe o build mais recente para sua plataforma no [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases):
+Baixe o build mais recente para sua plataforma no [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases):
 
 - **macOS** — Apple Silicon e Intel x64
 - **Windows** — x64
@@ -67,7 +67,7 @@ A imagem publicada executa o daemon e atende o build estático web na porta `745
 
 ```bash
 # 1. Clonar
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd Z-design
 
 # 2. Preparar variáveis de ambiente (gera um token de API seguro)
@@ -107,7 +107,7 @@ ZD_API_TOKEN=                                # OBRIGATÓRIO — gere com: openss
 
 ```bash
 # 1. Clonar
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd Z-design
 
 # 2. Toolchain (Node 24 + pnpm 10.33.x via Corepack)
@@ -115,7 +115,7 @@ corepack enable
 pnpm install
 
 # 3. Buildar a CLI do daemon (requerida pelo comando `od`)
-pnpm --filter @open-design/daemon build
+pnpm --filter @z-design/daemon build
 
 # 4. Iniciar daemon + web em primeiro plano
 pnpm tools-dev run web
@@ -424,9 +424,9 @@ O Z-design (OD) é a alternativa open-source. Mesmo loop, mesmo modelo mental ar
 
 A forma mais rápida de usar o Z-design. Sem Node, sem pnpm, sem clone.
 
-- **macOS** (Apple Silicon · Intel x64) → [**open-design.ai**](https://open-design.ai/) ou [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
-- **Windows** (x64) → [**open-design.ai**](https://open-design.ai/) ou [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
-- **Linux** (AppImage, trilha opcional) → [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
+- **macOS** (Apple Silicon · Intel x64) → [**open-design.ai**](https://open-design.ai/) ou [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
+- **Windows** (x64) → [**open-design.ai**](https://open-design.ai/) ou [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
+- **Linux** (AppImage, trilha opcional) → [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
 
 Após instalar: o app detecta automaticamente cada CLI de coding agent no seu `PATH`, carrega mais de 100 skills e 150 design systems e permite que você digite um briefing na tela de entrada.
 
@@ -452,7 +452,7 @@ O agente lê `skills/`, escolhe o `SKILL.md` certo, vincula o `DESIGN.md` que vo
 ### 🐳 Rode com Docker
 
 ```bash
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design/deploy
 cp .env.example .env
 echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
@@ -469,7 +469,7 @@ O template da Sealos App Store executa a imagem Docker publicada do Z-design com
 ### 🧑‍💻 Rode a partir do código-fonte
 
 ```bash
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design
 corepack enable && pnpm install
 pnpm tools-dev run web
@@ -641,7 +641,7 @@ Faça o scaffold + valide localmente:
 ```bash
 od plugin scaffold --id my-plugin --title "My Plugin"   # generate the skeleton
 od plugin validate ./my-plugin                          # check manifest / file layout
-pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
+pnpm guard && pnpm --filter @z-design/plugin-runtime typecheck
 ```
 
 Conjunto completo de campos e contrato de runtime → [`plugins/spec/SPEC.md`](../../plugins/spec/SPEC.md); desenvolver um plugin com um coding agent → [`plugins/spec/AGENT-DEVELOPMENT.md`](../../plugins/spec/AGENT-DEVELOPMENT.md); templates mínimos de copiar e colar → [`plugins/spec/examples/`](../../plugins/spec/examples/).
@@ -649,7 +649,7 @@ Conjunto completo de campos e contrato de runtime → [`plugins/spec/SPEC.md`](.
 ### Contribuindo com um plugin
 
 1. Solte a pasta do plugin em [`plugins/community/`](../../plugins/community/) (plugins de terceiros), ou — para entregá-lo empacotado com o Z-design — no tier correspondente de [`plugins/_official/`](../../plugins/_official/).
-2. Passe na validação: `od plugin validate`, `pnpm guard`, `pnpm --filter @open-design/plugin-runtime typecheck`.
+2. Passe na validação: `od plugin validate`, `pnpm guard`, `pnpm --filter @z-design/plugin-runtime typecheck`.
 3. Preencha o PR usando o template em [`plugins/spec/CONTRIBUTING.md`](../../plugins/spec/CONTRIBUTING.md) (ID, versão, lane, mode, capacidades, exemplos de trigger; anexe um screenshot / prévia para plugins visuais).
 4. Para publicar em um registry externo (skills.sh / ClawHub / GitHub standalone) → [`plugins/spec/PUBLISHING-REGISTRIES.md`](../../plugins/spec/PUBLISHING-REGISTRIES.md).
 
@@ -730,10 +730,10 @@ Pessoas de verdade por trás de cada canal.
 
 - 💬 **Discord** — chat diário, compartilhamento de plugins, perguntas → [**discord.gg/9ptkbbqRu**](https://discord.gg/9ptkbbqRu)
 - 🐦 **X / Twitter** — notas de release, marcos, bastidores → [**@nexudotio**](https://x.com/nexudotio)
-- 🗣️ **GitHub Discussions** — Q&A aprofundado, RFCs, "mostre seu trabalho" → [**Discussions**](https://github.com/Aqu-210L/Z-design/discussions)
-- 🐛 **GitHub Issues** — relatos de bugs, pedidos de features → [**Issues**](https://github.com/Aqu-210L/Z-design/issues)
+- 🗣️ **GitHub Discussions** — Q&A aprofundado, RFCs, "mostre seu trabalho" → [**Discussions**](https://github.com/LJYSkywalker/Z-design/discussions)
+- 🐛 **GitHub Issues** — relatos de bugs, pedidos de features → [**Issues**](https://github.com/LJYSkywalker/Z-design/issues)
 
-As labels [`good-first-issue`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) e [`help-wanted`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) são a forma mais fácil de começar.
+As labels [`good-first-issue`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) e [`help-wanted`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) são a forma mais fácil de começar.
 
 ---
 
@@ -749,7 +749,7 @@ O Z-design continua avançando porque os contribuidores — designers, engenheir
 | Um novo **design system** | Solte um `DESIGN.md` usando o schema de 9 seções | [`design-systems/<brand>/`](../../design-systems/) |
 | Um novo **plugin** | Solte `z-design.json` + manifesto numa pasta de categoria | [`plugins/community/`](../../plugins/community/) · spec em [`plugins/spec/SPEC.md`](../../plugins/spec/SPEC.md) · guia de dev por agente em [`plugins/spec/AGENT-DEVELOPMENT.md`](../../plugins/spec/AGENT-DEVELOPMENT.md) |
 | Suportar uma nova **CLI de coding agent** | Uma entrada de adaptador + parser de stream | [`apps/daemon/src/agents.ts`](../../apps/daemon/src/agents.ts) |
-| Corrigir um bug ou polir a UI | Explore a label [`good-first-issue`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) | [Issues →](https://github.com/Aqu-210L/Z-design/issues) |
+| Corrigir um bug ou polir a UI | Explore a label [`good-first-issue`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) | [Issues →](https://github.com/LJYSkywalker/Z-design/issues) |
 | Traduzir a documentação | Atualize os arquivos `README.<lang>.md` | [`TRANSLATIONS.md`](../../TRANSLATIONS.md) |
 
 ### 🤖 Contribuindo como agente
@@ -758,7 +758,7 @@ Se *você é o agente que está lendo isto*, o caminho mais rápido é:
 
 ```bash
 # 1. Boot locally
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design && corepack enable && pnpm install
 pnpm tools-dev run web
 
@@ -768,7 +768,7 @@ gh issue develop <number>   # create a branch and worktree
 
 # 3. Make the change, run the checks
 pnpm guard && pnpm typecheck
-pnpm --filter @open-design/<package> test
+pnpm --filter @z-design/<package> test
 
 # 4. Open the PR
 gh pr create --fill
@@ -811,7 +811,7 @@ Regras dos mantenedores, critérios de promoção e o protocolo de saída → [`
 
 Obrigado a todas as pessoas que participaram — código, docs, feedback, uma issue afiada, uma nova skill, um novo design system.
 
-<a href="https://github.com/Aqu-210L/Z-design/graphs/contributors">
+<a href="https://github.com/LJYSkywalker/Z-design/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=nexu-io/open-design&max=500&columns=20&anon=1&cache_bust=2026-05-30" alt="Z-design contributors" />
 </a>
 
@@ -830,7 +830,7 @@ O SVG acima é regenerado diariamente por [`.github/workflows/metrics.yml`](../.
 ## Dê uma estrela
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="Star Z-design on GitHub — github.com/Aqu-210L/Z-design" width="100%" /></a>
+  <a href="https://github.com/LJYSkywalker/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="Star Z-design on GitHub — github.com/LJYSkywalker/Z-design" width="100%" /></a>
 </p>
 
 Se isto te poupou trinta minutos, dê um ★. Estrelas não pagam o aluguel — mas dizem ao próximo designer, agente e contribuidor que este experimento vale a atenção deles. Um clique, três segundos, um sinal de verdade.

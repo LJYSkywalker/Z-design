@@ -1,6 +1,6 @@
 <h1 align="center">Z-design: Açık kaynaklı Claude Design alternatifi</h1>
 
-> 🔥 **Z-design 0.10.0 burada: hepsi bir arada Agentic tasarım çalışma alanı.** Zanaatın tamamı artık tek pencerede — belirsiz bir fikirden referans keşfine, malzeme toplamaya, etkileşimli düzenlemeye, yorumları kuyruğa almaya, animasyonları cilalamaya ve sonucu bir editöre ya da Code Agent'a devretmeye kadar — uygulamadan hiç çıkmadan. Paralel oturumlarla artık tek bir asistan gibi değil, sizin için çalışan yerel bir tasarım ekibi gibi hissettiriyor. [0.10.0'ı indir](https://github.com/Aqu-210L/Z-design/releases) · [Tartışmaya katıl](https://github.com/Aqu-210L/Z-design/discussions/4153)
+> 🔥 **Z-design 1.0.0 burada: hepsi bir arada Agentic tasarım çalışma alanı.** Zanaatın tamamı artık tek pencerede — belirsiz bir fikirden referans keşfine, malzeme toplamaya, etkileşimli düzenlemeye, yorumları kuyruğa almaya, animasyonları cilalamaya ve sonucu bir editöre ya da Code Agent'a devretmeye kadar — uygulamadan hiç çıkmadan. Paralel oturumlarla artık tek bir asistan gibi değil, sizin için çalışan yerel bir tasarım ekibi gibi hissettiriyor. [1.0.0'ı indir](https://github.com/LJYSkywalker/Z-design/releases) · [Tartışmaya katıl](https://github.com/LJYSkywalker/Z-design/discussions/4153)
 >
 <p align="center">
   <img src="https://repo-assets.open-design.ai/resources/images/hero.png" alt="Z-design — The GLM-native agentic design workspace · 150 Design Systems · 261 Plugins · 21 Coding Agents · 14 Media Providers" width="100%" />
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design/releases"><img alt="release" src="https://img.shields.io/github/v/release/nexu-io/open-design?style=flat&color=blueviolet&label=release&include_prereleases&display_name=tag" /></a>
+  <a href="https://github.com/LJYSkywalker/Z-design/releases"><img alt="release" src="https://img.shields.io/github/v/release/nexu-io/open-design?style=flat&color=blueviolet&label=release&include_prereleases&display_name=tag" /></a>
   <a href="../../LICENSE"><img alt="license" src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat" /></a>
   <a href="https://discord.gg/9ptkbbqRu"><img alt="discord" src="https://img.shields.io/discord/1479002485040480266?style=flat&logo=discord&logoColor=white&label=discord&color=5865F2&cacheSeconds=3600" /></a>
   <a href="../../QUICKSTART.md"><img alt="quickstart" src="https://img.shields.io/badge/quickstart-3%20commands-green?style=flat" /></a>
@@ -53,7 +53,7 @@ Z-Design; yerel öncelikli bir masaüstü uygulaması, bir Docker imajı ve kayn
 
 ### Seçenek A — Masaüstü uygulaması (sıfır yapılandırma, önerilir)
 
-Platformunuz için en son derlemeyi [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases) üzerinden indirin:
+Platformunuz için en son derlemeyi [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases) üzerinden indirin:
 
 - **macOS** — Apple Silicon ve Intel x64
 - **Windows** — x64
@@ -67,7 +67,7 @@ Yayınlanan imaj daemon'u çalıştırır ve `7456` portunda statik web derlemes
 
 ```bash
 # 1. Klonla
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd Z-design
 
 # 2. Ortam değişkenlerini hazırla (güvenli bir API token üretir)
@@ -107,7 +107,7 @@ ZD_API_TOKEN=                                # ZORUNLU — şununla üretin: ope
 
 ```bash
 # 1. Klonla
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd Z-design
 
 # 2. Toolchain (Node 24 + pnpm 10.33.x, Corepack ile)
@@ -115,7 +115,7 @@ corepack enable
 pnpm install
 
 # 3. Daemon CLI'sını derle (`od` komutu için gerekli)
-pnpm --filter @open-design/daemon build
+pnpm --filter @z-design/daemon build
 
 # 4. Daemon + web'i ön planda başlat
 pnpm tools-dev run web
@@ -424,9 +424,9 @@ Z-design (OD) açık kaynaklı alternatiftir. Aynı döngü, aynı artifact önc
 
 Z-design'ı kullanmanın en hızlı yolu. Node yok, pnpm yok, klonlama yok.
 
-- **macOS** (Apple Silicon · Intel x64) → [**open-design.ai**](https://open-design.ai/) veya [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
-- **Windows** (x64) → [**open-design.ai**](https://open-design.ai/) veya [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
-- **Linux** (AppImage, isteğe bağlı hat) → [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
+- **macOS** (Apple Silicon · Intel x64) → [**open-design.ai**](https://open-design.ai/) veya [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
+- **Windows** (x64) → [**open-design.ai**](https://open-design.ai/) veya [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
+- **Linux** (AppImage, isteğe bağlı hat) → [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
 
 Kurulumdan sonra: uygulama `PATH`'inizdeki her kodlama ajanı CLI'sini otomatik algılar, 100+ beceri ve 150 tasarım sistemi yükler ve giriş görünümünde bir özet yazmanıza olanak tanır.
 
@@ -452,7 +452,7 @@ Ajan `skills/` dizinini okur, doğru `SKILL.md` dosyasını seçer, adını verd
 ### 🐳 Docker ile çalıştırın
 
 ```bash
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design/deploy
 cp .env.example .env
 echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
@@ -469,7 +469,7 @@ Sealos App Store şablonu, yayımlanmış Z-design Docker imajını kalıcı ça
 ### 🧑‍💻 Kaynaktan çalıştırın
 
 ```bash
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design
 corepack enable && pnpm install
 pnpm tools-dev run web
@@ -641,7 +641,7 @@ Yerel olarak iskeletle + doğrula:
 ```bash
 od plugin scaffold --id my-plugin --title "My Plugin"   # generate the skeleton
 od plugin validate ./my-plugin                          # check manifest / file layout
-pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
+pnpm guard && pnpm --filter @z-design/plugin-runtime typecheck
 ```
 
 Tam alan kümesi ve çalışma zamanı sözleşmesi → [`plugins/spec/SPEC.md`](../../plugins/spec/SPEC.md); bir kodlama ajanıyla eklenti geliştirme → [`plugins/spec/AGENT-DEVELOPMENT.md`](../../plugins/spec/AGENT-DEVELOPMENT.md); kopyala-yapıştır minimal şablonlar → [`plugins/spec/examples/`](../../plugins/spec/examples/).
@@ -649,7 +649,7 @@ Tam alan kümesi ve çalışma zamanı sözleşmesi → [`plugins/spec/SPEC.md`]
 ### Bir eklentiye katkıda bulunma
 
 1. Eklenti klasörünü [`plugins/community/`](../../plugins/community/) içine (üçüncü taraf eklentiler) veya — onu Z-design ile birlikte paketlenmiş olarak sunmak için — [`plugins/_official/`](../../plugins/_official/) içindeki eşleşen katmana bırakın.
-2. Doğrulamayı geçin: `od plugin validate`, `pnpm guard`, `pnpm --filter @open-design/plugin-runtime typecheck`.
+2. Doğrulamayı geçin: `od plugin validate`, `pnpm guard`, `pnpm --filter @z-design/plugin-runtime typecheck`.
 3. PR'ı [`plugins/spec/CONTRIBUTING.md`](../../plugins/spec/CONTRIBUTING.md) içindeki şablonu kullanarak doldurun (kimlik, sürüm, hat, mod, yetenekler, tetikleme örnekleri; görsel eklentiler için bir ekran görüntüsü / önizleme ekleyin).
 4. Harici bir kayda yayınlamak için (skills.sh / ClawHub / bağımsız GitHub) → [`plugins/spec/PUBLISHING-REGISTRIES.md`](../../plugins/spec/PUBLISHING-REGISTRIES.md).
 
@@ -730,10 +730,10 @@ Her kanalın arkasında gerçek insanlar var.
 
 - 💬 **Discord** — günlük sohbet, eklenti paylaşımı, sorular → [**discord.gg/9ptkbbqRu**](https://discord.gg/9ptkbbqRu)
 - 🐦 **X / Twitter** — sürüm notları, kilometre taşları, perde arkası → [**@nexudotio**](https://x.com/nexudotio)
-- 🗣️ **GitHub Discussions** — derinlemesine soru-cevap, RFC'ler, "çalışmanı göster" → [**Discussions**](https://github.com/Aqu-210L/Z-design/discussions)
-- 🐛 **GitHub Issues** — hata raporları, özellik istekleri → [**Issues**](https://github.com/Aqu-210L/Z-design/issues)
+- 🗣️ **GitHub Discussions** — derinlemesine soru-cevap, RFC'ler, "çalışmanı göster" → [**Discussions**](https://github.com/LJYSkywalker/Z-design/discussions)
+- 🐛 **GitHub Issues** — hata raporları, özellik istekleri → [**Issues**](https://github.com/LJYSkywalker/Z-design/issues)
 
-[`good-first-issue`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) ve [`help-wanted`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) etiketleri başlamanın en kolay yoludur.
+[`good-first-issue`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) ve [`help-wanted`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) etiketleri başlamanın en kolay yoludur.
 
 ---
 
@@ -749,7 +749,7 @@ Z-design, katkıda bulunanlar — tasarımcılar, mühendisler, komut yazarları
 | Yeni bir **tasarım sistemi** | 9 bölümlük şemayı kullanan bir `DESIGN.md` bırakın | [`design-systems/<brand>/`](../../design-systems/) |
 | Yeni bir **eklenti** | Bir kategori klasörü altına `z-design.json` + manifest bırakın | [`plugins/community/`](../../plugins/community/) · spesifikasyon [`plugins/spec/SPEC.md`](../../plugins/spec/SPEC.md) içinde · ajan geliştirme kılavuzu [`plugins/spec/AGENT-DEVELOPMENT.md`](../../plugins/spec/AGENT-DEVELOPMENT.md) içinde |
 | Yeni bir **kodlama ajanı CLI'si** destekleyin | Bir adaptör girdisi + akış ayrıştırıcı | [`apps/daemon/src/agents.ts`](../../apps/daemon/src/agents.ts) |
-| Bir hatayı düzeltin veya UI'yi cilalayın | [`good-first-issue`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) etiketine göz atın | [Issues →](https://github.com/Aqu-210L/Z-design/issues) |
+| Bir hatayı düzeltin veya UI'yi cilalayın | [`good-first-issue`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) etiketine göz atın | [Issues →](https://github.com/LJYSkywalker/Z-design/issues) |
 | Belgeleri çevirin | `README.<lang>.md` dosyalarını güncelleyin | [`TRANSLATIONS.md`](../../TRANSLATIONS.md) |
 
 ### 🤖 Bir ajan olarak katkıda bulunma
@@ -758,7 +758,7 @@ Z-design, katkıda bulunanlar — tasarımcılar, mühendisler, komut yazarları
 
 ```bash
 # 1. Boot locally
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design && corepack enable && pnpm install
 pnpm tools-dev run web
 
@@ -768,7 +768,7 @@ gh issue develop <number>   # create a branch and worktree
 
 # 3. Make the change, run the checks
 pnpm guard && pnpm typecheck
-pnpm --filter @open-design/<package> test
+pnpm --filter @z-design/<package> test
 
 # 4. Open the PR
 gh pr create --fill
@@ -811,7 +811,7 @@ Bakımcı kuralları, terfi kriterleri ve çıkış protokolü → [`MAINTAINERS
 
 Katılan herkese teşekkürler — kod, belge, geri bildirim, keskin bir issue, yeni bir beceri, yeni bir tasarım sistemi.
 
-<a href="https://github.com/Aqu-210L/Z-design/graphs/contributors">
+<a href="https://github.com/LJYSkywalker/Z-design/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=nexu-io/open-design&max=500&columns=20&anon=1&cache_bust=2026-05-30" alt="Z-design contributors" />
 </a>
 
@@ -830,7 +830,7 @@ Yukarıdaki SVG, [`lowlighter/metrics`](https://github.com/lowlighter/metrics) k
 ## Bize yıldız verin
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="Star Z-design on GitHub — github.com/Aqu-210L/Z-design" width="100%" /></a>
+  <a href="https://github.com/LJYSkywalker/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="Star Z-design on GitHub — github.com/LJYSkywalker/Z-design" width="100%" /></a>
 </p>
 
 Bu size otuz dakika kazandırdıysa, bir ★ verin. Yıldızlar kira ödemez — ama bir sonraki tasarımcıya, ajana ve katkıda bulunana bu deneyin dikkatlerine değer olduğunu söyler. Tek tıkla, üç saniyede, gerçek bir sinyal.

@@ -1,6 +1,6 @@
 {
   "name": "@z-design/plugin-runtime",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Pure-TS Open Design plugin runtime: manifest parsers, adapters, merger, ref resolver, validator, digest. No node:fs imports — daemon/web/CI inject loaders.",

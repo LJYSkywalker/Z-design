@@ -1,6 +1,6 @@
 <h1 align="center">Z-design: открытая альтернатива Claude Design</h1>
 
-> 🔥 **Z-design 0.10.0 уже здесь: универсальное Agentic-рабочее пространство для дизайна.** Всё ремесло теперь живёт в одном окне — от смутной идеи к поиску референсов, сбору материала, интерактивному редактированию, очереди комментариев, полировке анимаций и передаче результата редактору или Code Agent — не покидая приложение. С параллельными сессиями это уже не один ассистент, а целая локальная команда дизайнеров, работающая на вас. [Скачать 0.10.0](https://github.com/Aqu-210L/Z-design/releases) · [Присоединиться к обсуждению](https://github.com/Aqu-210L/Z-design/discussions/4153)
+> 🔥 **Z-design 1.0.0 уже здесь: универсальное Agentic-рабочее пространство для дизайна.** Всё ремесло теперь живёт в одном окне — от смутной идеи к поиску референсов, сбору материала, интерактивному редактированию, очереди комментариев, полировке анимаций и передаче результата редактору или Code Agent — не покидая приложение. С параллельными сессиями это уже не один ассистент, а целая локальная команда дизайнеров, работающая на вас. [Скачать 1.0.0](https://github.com/LJYSkywalker/Z-design/releases) · [Присоединиться к обсуждению](https://github.com/LJYSkywalker/Z-design/discussions/4153)
 >
 <p align="center">
   <img src="https://repo-assets.open-design.ai/resources/images/hero.png" alt="Z-design — The GLM-native agentic design workspace · 150 Design Systems · 261 Plugins · 21 Coding Agents · 14 Media Providers" width="100%" />
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design/releases"><img alt="release" src="https://img.shields.io/github/v/release/nexu-io/open-design?style=flat&color=blueviolet&label=release&include_prereleases&display_name=tag" /></a>
+  <a href="https://github.com/LJYSkywalker/Z-design/releases"><img alt="release" src="https://img.shields.io/github/v/release/nexu-io/open-design?style=flat&color=blueviolet&label=release&include_prereleases&display_name=tag" /></a>
   <a href="../../LICENSE"><img alt="license" src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat" /></a>
   <a href="https://discord.gg/9ptkbbqRu"><img alt="discord" src="https://img.shields.io/discord/1479002485040480266?style=flat&logo=discord&logoColor=white&label=discord&color=5865F2&cacheSeconds=3600" /></a>
   <a href="../../QUICKSTART.md"><img alt="quickstart" src="https://img.shields.io/badge/quickstart-3%20commands-green?style=flat" /></a>
@@ -53,7 +53,7 @@ Z-Design поставляется как локально-ориентирова
 
 ### Вариант A — Десктоп-приложение (без настройки, рекомендуется)
 
-Скачайте свежий сборку для вашей платформы из [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases):
+Скачайте свежий сборку для вашей платформы из [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases):
 
 - **macOS** — Apple Silicon и Intel x64
 - **Windows** — x64
@@ -67,7 +67,7 @@ Z-Design поставляется как локально-ориентирова
 
 ```bash
 # 1. Клонировать
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd Z-design
 
 # 2. Подготовить переменные окружения (генерирует безопасный API-токен)
@@ -107,7 +107,7 @@ ZD_API_TOKEN=                                # ОБЯЗАТЕЛЬНО — сге
 
 ```bash
 # 1. Клонировать
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd Z-design
 
 # 2. Toolchain (Node 24 + pnpm 10.33.x через Corepack)
@@ -115,7 +115,7 @@ corepack enable
 pnpm install
 
 # 3. Собрать CLI демона (требуется командой `od`)
-pnpm --filter @open-design/daemon build
+pnpm --filter @z-design/daemon build
 
 # 4. Запустить демон + web на переднем плане
 pnpm tools-dev run web
@@ -424,9 +424,9 @@ Z-design (OD) — это открытая альтернатива. Тот же 
 
 Самый быстрый способ использовать Z-design. Никакого Node, никакого pnpm, никакого клонирования.
 
-- **macOS** (Apple Silicon · Intel x64) → [**open-design.ai**](https://open-design.ai/) или [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
-- **Windows** (x64) → [**open-design.ai**](https://open-design.ai/) или [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
-- **Linux** (AppImage, опциональная линия) → [GitHub Releases](https://github.com/Aqu-210L/Z-design/releases)
+- **macOS** (Apple Silicon · Intel x64) → [**open-design.ai**](https://open-design.ai/) или [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
+- **Windows** (x64) → [**open-design.ai**](https://open-design.ai/) или [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
+- **Linux** (AppImage, опциональная линия) → [GitHub Releases](https://github.com/LJYSkywalker/Z-design/releases)
 
 После установки: приложение автоматически обнаруживает каждый CLI кодинг-агента в вашем `PATH`, загружает 100+ навыков и 150 дизайн-систем и позволяет вам ввести бриф на экране входа.
 
@@ -452,7 +452,7 @@ curl -fsSL https://open-design.ai/install.sh | sh -s <agent>
 ### 🐳 Запуск с Docker
 
 ```bash
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design/deploy
 cp .env.example .env
 echo "ZD_API_TOKEN=$(openssl rand -hex 32)" >> .env
@@ -469,7 +469,7 @@ docker compose up -d
 ### 🧑‍💻 Запуск из исходников
 
 ```bash
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design
 corepack enable && pnpm install
 pnpm tools-dev run web
@@ -641,7 +641,7 @@ my-plugin/
 ```bash
 od plugin scaffold --id my-plugin --title "My Plugin"   # generate the skeleton
 od plugin validate ./my-plugin                          # check manifest / file layout
-pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
+pnpm guard && pnpm --filter @z-design/plugin-runtime typecheck
 ```
 
 Полный набор полей и рантайм-контракт → [`plugins/spec/SPEC.md`](../../plugins/spec/SPEC.md); разработка плагина с кодинг-агентом → [`plugins/spec/AGENT-DEVELOPMENT.md`](../../plugins/spec/AGENT-DEVELOPMENT.md); готовые к копированию минимальные шаблоны → [`plugins/spec/examples/`](../../plugins/spec/examples/).
@@ -649,7 +649,7 @@ pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
 ### Вклад в виде плагина
 
 1. Бросьте папку плагина в [`plugins/community/`](../../plugins/community/) (сторонние плагины), или — чтобы поставлять его вместе с Z-design — в соответствующий уровень [`plugins/_official/`](../../plugins/_official/).
-2. Пройдите валидацию: `od plugin validate`, `pnpm guard`, `pnpm --filter @open-design/plugin-runtime typecheck`.
+2. Пройдите валидацию: `od plugin validate`, `pnpm guard`, `pnpm --filter @z-design/plugin-runtime typecheck`.
 3. Заполните PR, используя шаблон в [`plugins/spec/CONTRIBUTING.md`](../../plugins/spec/CONTRIBUTING.md) (ID, версия, линия, режим, возможности, примеры триггеров; приложите скриншот / предпросмотр для визуальных плагинов).
 4. Чтобы опубликовать во внешнем реестре (skills.sh / ClawHub / отдельный GitHub) → [`plugins/spec/PUBLISHING-REGISTRIES.md`](../../plugins/spec/PUBLISHING-REGISTRIES.md).
 
@@ -730,10 +730,10 @@ pnpm guard && pnpm --filter @open-design/plugin-runtime typecheck
 
 - 💬 **Discord** — ежедневный чат, обмен плагинами, вопросы → [**discord.gg/9ptkbbqRu**](https://discord.gg/9ptkbbqRu)
 - 🐦 **X / Twitter** — заметки о релизах, вехи, закулисье → [**@nexudotio**](https://x.com/nexudotio)
-- 🗣️ **GitHub Discussions** — глубокие Q&A, RFC, «покажи свою работу» → [**Discussions**](https://github.com/Aqu-210L/Z-design/discussions)
-- 🐛 **GitHub Issues** — отчёты об ошибках, запросы функций → [**Issues**](https://github.com/Aqu-210L/Z-design/issues)
+- 🗣️ **GitHub Discussions** — глубокие Q&A, RFC, «покажи свою работу» → [**Discussions**](https://github.com/LJYSkywalker/Z-design/discussions)
+- 🐛 **GitHub Issues** — отчёты об ошибках, запросы функций → [**Issues**](https://github.com/LJYSkywalker/Z-design/issues)
 
-Метки [`good-first-issue`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) и [`help-wanted`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) — самый простой способ начать.
+Метки [`good-first-issue`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) и [`help-wanted`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) — самый простой способ начать.
 
 ---
 
@@ -749,7 +749,7 @@ Z-design продолжает двигаться, потому что контр
 | Новую **дизайн-систему** | Бросьте `DESIGN.md`, используя схему из 9 разделов | [`design-systems/<brand>/`](../../design-systems/) |
 | Новый **плагин** | Бросьте `z-design.json` + манифест в папку категории | [`plugins/community/`](../../plugins/community/) · спецификация в [`plugins/spec/SPEC.md`](../../plugins/spec/SPEC.md) · руководство по разработке для агентов в [`plugins/spec/AGENT-DEVELOPMENT.md`](../../plugins/spec/AGENT-DEVELOPMENT.md) |
 | Поддержку нового **CLI кодинг-агента** | Одна запись адаптера + парсер потока | [`apps/daemon/src/agents.ts`](../../apps/daemon/src/agents.ts) |
-| Исправить баг или отполировать UI | Просмотрите метку [`good-first-issue`](https://github.com/Aqu-210L/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) | [Issues →](https://github.com/Aqu-210L/Z-design/issues) |
+| Исправить баг или отполировать UI | Просмотрите метку [`good-first-issue`](https://github.com/LJYSkywalker/Z-design/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) | [Issues →](https://github.com/LJYSkywalker/Z-design/issues) |
 | Перевести документацию | Обновите файлы `README.<lang>.md` | [`TRANSLATIONS.md`](../../TRANSLATIONS.md) |
 
 ### 🤖 Вклад в роли агента
@@ -758,7 +758,7 @@ Z-design продолжает двигаться, потому что контр
 
 ```bash
 # 1. Boot locally
-git clone https://github.com/Aqu-210L/Z-design.git
+git clone https://github.com/LJYSkywalker/Z-design.git
 cd open-design && corepack enable && pnpm install
 pnpm tools-dev run web
 
@@ -768,7 +768,7 @@ gh issue develop <number>   # create a branch and worktree
 
 # 3. Make the change, run the checks
 pnpm guard && pnpm typecheck
-pnpm --filter @open-design/<package> test
+pnpm --filter @z-design/<package> test
 
 # 4. Open the PR
 gh pr create --fill
@@ -811,7 +811,7 @@ gh pr create --fill
 
 Спасибо всем, кто принял участие — код, документация, обратная связь, точный issue, новый навык, новая дизайн-система.
 
-<a href="https://github.com/Aqu-210L/Z-design/graphs/contributors">
+<a href="https://github.com/LJYSkywalker/Z-design/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=nexu-io/open-design&max=500&columns=20&anon=1&cache_bust=2026-05-30" alt="Z-design contributors" />
 </a>
 
@@ -830,7 +830,7 @@ SVG выше регенерируется ежедневно через [`.githu
 ## Поставьте нам звезду
 
 <p align="center">
-  <a href="https://github.com/Aqu-210L/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="Star Z-design on GitHub — github.com/Aqu-210L/Z-design" width="100%" /></a>
+  <a href="https://github.com/LJYSkywalker/Z-design"><img src="https://repo-assets.open-design.ai/resources/images/star-us.png" alt="Star Z-design on GitHub — github.com/LJYSkywalker/Z-design" width="100%" /></a>
 </p>
 
 Если это сэкономило вам тридцать минут, поставьте ★. Звёзды не платят за аренду — но они говорят следующему дизайнеру, агенту и контрибьютору, что этот эксперимент достоин их внимания. Один клик, три секунды, настоящий сигнал.
